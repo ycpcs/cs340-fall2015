@@ -1,4 +1,4 @@
-baseurl: "http://ycpcs.github.io/cs340-fall2014"
+baseurl: "http://ycpcs.github.io/cs340-fall2015"
 markdown: rdiscount
 highlighter: pygments
 coursename: "CS 340"
