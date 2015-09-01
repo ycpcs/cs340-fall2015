@@ -13,8 +13,8 @@ To get started, run the following commands:
     cd $HOME
     mkdir -p CS340/CS340_Lab01
     cd CS340/CS340_Lab01
-    wget http://ycpcs.github.io/cs340-fall2014/resources/regexChecker.jar
-    wget http://ycpcs.github.io/cs340-fall2014/resources/regexEquivalenceChecker.jar
+    wget http://ycpcs.github.io/cs340-fall2015/resources/regexChecker.jar
+    wget http://ycpcs.github.io/cs340-fall2015/resources/regexEquivalenceChecker.jar
 
 You can run the **regexChecker.jar** program with the command
 
