@@ -39,6 +39,8 @@ You can use the **regexChecker.jar** program to test your regular expressions to
 
 Note that ε (epsilon) denotes the empty string.
 
+When you are done you can check your answers against the [solutions](lab01soln.html).
+
 Language 1
 ----------
 
