@@ -21,3 +21,7 @@ Your task is to produce:
 
 * The table mapping NFA state sets to corresponding DFA states
 * The resulting DFA (equivalent to the NFA)
+
+## Solution
+
+Here is a solution: [lab03soln.pdf](lab03soln.pdf)
