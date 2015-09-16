@@ -20,6 +20,7 @@ This is the website for CS 340, Fall 2015 at York College.  All information abou
 
 ## News
 
+* **Sep 16** &mdashl; A solution to [Lab 4](labs/lab04.html) has been posted on the [Labs](labs/index.html) page.
 * **Sep 15** &mdash; [Assignment 3](assign/assign03.html) is due Thursday, Sept 24th.
 * **Sep 2** &mdash; [Solutions](labs/lab01soln.html) to [Lab 1](labs/lab01.html) are available.
 * **Sep 1** &mdash; Welcome back!  [Assignment 1](assign/assign01.html) and [Assignment 2](assign/assign02.html) have been posted, due Tuesday Sep 8th and Tuesday Sep 15th, respectively.
