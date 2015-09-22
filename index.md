@@ -20,6 +20,7 @@ This is the website for CS 340, Fall 2015 at York College.  All information abou
 
 ## News
 
+* **Sep 22** &mdash; Exam 1 will take place in class on Thursday, Oct 1st.  It will be open book and open notes.  A practice exam is available on the [Practice Exams](practice/index.html) page.
 * **Sep 16** &mdash; A solution to [Lab 4](labs/lab04.html) has been posted on the [Labs](labs/index.html) page.
 * **Sep 15** &mdash; [Assignment 3](assign/assign03.html) is due Thursday, Sept 24th.
 * **Sep 2** &mdash; [Solutions](labs/lab01soln.html) to [Lab 1](labs/lab01.html) are available.
