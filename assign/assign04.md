@@ -3,13 +3,11 @@ layout: default
 title: "Assignment 4: Clojure MOOC"
 ---
 
-*Updated 10/2*: Added Milestone 3
-
 **Due**:
 
-* Milestone 1 is due Monday, Sept 29th
-* Milestone 2 is due Monday, Oct 6th
-* Milestone 3 is due Thursday, Oct 16th
+* Milestone 1 is due Monday, Oct 5th
+* Milestone 2 is due Monday, Oct 12th
+* Milestone 3 is due Thursday, Oct 22nd
 
 **Note**: This assignment will not be graded.
 
@@ -17,11 +15,11 @@ title: "Assignment 4: Clojure MOOC"
 
 We will be using [Clojure](http://clojure.org/) for a series of programming assignments.
 
-The [Functional programming with Clojure](http://mooc.cs.helsinki.fi/clojure) MOOC at the University of Helsinki is a truly excellent way to learn Clojure.  In this assignment you will work on the first four chapters.  There are two Milestones:
+The [Functional programming with Clojure](http://mooc.fi/courses/2014/clojure/index.html) MOOC at the University of Helsinki is a truly excellent way to learn Clojure.  In this assignment you will work on the first four chapters.  There are two Milestones:
 
 * Milestone 1: Complete **Basic tools**, **Training day**, and **I am a horse in the land of booleans**
-* Milestone 2: Complete **Structured data**
-* Milestone 3: Complete **P-P-P-Pokerface** (look over **Style** as well, although there are no problems in that chapter)
+* Milestone 2: Complete **Structured data** and **P-P-P-Pokerface** (look over **Style** as well, although there are no problems in that chapter)
+* Milestone 3: Complete **Predicates** and **Recursion**
 
 You can find the chapters on the [Material and course content](http://iloveponies.github.io/120-hour-epic-sax-marathon/index.html) page.
 

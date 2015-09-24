@@ -19,8 +19,8 @@ This page lists the schedule for the course.  Note that there may be minor chang
 > Thurs, Sep 24th | [Lecture 8: Decidability and the Halting Problem](lectures/lecture08.html)
 > Tues, Sep 29th | [Lecture 9: Decidability of Regular Languages](lectures/lecture09.html)
 > Thurs, Oct 1st | **Exam 1** (open book, open notes)
-> Tues, Oct 6th |
-> Thurs, Oct 8th |
+> Tues, Oct 6th | Chapter 7 (Clojure), [Lecture 10: Why Clojure?](lectures/lecture10.html)
+> Thurs, Oct 8th | [Lecture 11: Recursion and iteration in Clojure](lectures/lecture11.html)
 > Tues, Oct 13th |
 > Thurs, Oct 15th |
 > Tues, Oct 20th | Fall break, no class
