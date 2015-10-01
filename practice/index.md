@@ -5,4 +5,4 @@ title: "Practice Exams"
 
 This page has links to practice exams.
 
-[Exam 1, Fall 2014](cs340-fall2014-exam01.pdf)
+[Exam 1, Fall 2014](cs340-fall2014-exam01.pdf), [Solution](cs340-fall2014-exam01-solution.pdf)
