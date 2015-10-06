@@ -14,6 +14,8 @@ Why learn Clojure?
 * Higher-order functions (functions can return functions)
 * Powerful tools for *composing* functions: map, reduce, filter
 * Interoperability with Java (any Java class/method can be used from Clojure code)
+* Extremely rich literal syntax for structured data
+* Homoiconicity: code is data
 * Macros (code that generates or transforms code: a program add new syntactic forms to the language)
 * Interactive, incremental development (the REPL, read-eval-print loop)
 
