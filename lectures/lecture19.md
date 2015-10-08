@@ -1,159 +1,366 @@
 ---
 layout: default
-title: "Lecture 19: Metaprogramming in Ruby"
+title: "Lecture 19: Ruby"
 ---
 
-Code examples: [meta.rb](meta.rb), [meta2.rb](meta2.rb)
+Designed by Yukihiro Matsumoto in 1993; first public release in 1995.
 
-Blocks and Procs
-================
+Features
+========
 
-In Ruby, you can create an object that is a handle to a block by creating a **Proc** object:
+Dynamically typed (variables may contain any kind of value)
+
+Interpreted: Ruby source code is directly loaded into the Ruby interpreter and executed. (Internally, the interpreter translates the source program into a more-easily executed format.)
+
+Because it is dynamically typed and interpreted, Ruby is often referred to as a "scripting" language. The designation "scripting language" brings connotations of not being a "serious" language, and/or not being suitable for the development of large programs. This view is too narrow; many large programs are now developed using languages like Ruby, Python, Perl, etc. At the same time, type checking in dynamically-typed languages is generally deferred to runtime, meaning that some type errors may not be caught until the program runs. Opinions differ as to whether or not this is a serious problem.
+
+Everything is an Object
+=======================
+
+Ruby is a pure object-oriented language; all values are references to objects. For example, each of the following two statements prints "5"
 
 {% highlight ruby %}
-add1 = Proc.new {|x| x + 1}
-puts add1.call(3)               # prints 4
+puts 2 + 3
+puts 2.+(3)
 {% endhighlight %}
 
-A **Proc** acts as an anonymous function.
+The expression "2 + 3" is familiar: literal values 2 and 3 are added by an infix + operator. In most languages, values 2 and 3 would belong to a primitive integer type distinct from the universe of classes and user-defined types. In Ruby, they are instances of the Fixnum class. The second code example above makes a direct call to the + method on the object 2, passing the argument 3.
 
-Metaprogramming
-===============
-
-*Metaprogramming* is the ability for a program to create new functions/methods when the program runs.
-
-Ruby has excellent support for metaprogramming because
-
--   Methods can be added to classes and objects at runtime
--   **Proc**s allow code to be "saved" and executed later
-
-Motivation
-----------
-
-Most classes will need getter and setter methods:
+We can directly inquire the class an object belongs to by calling the "class" method.
 
 {% highlight ruby %}
-class Person
-    def initialize(name, age)
-        @name = name
-        @age = age
-    end
+puts 2.class
+{% endhighlight %}
 
-    def getName
-        return @name
-    end
+This prints "Fixnum".
 
-    def setName(name)
-        @name = name
-    end
+Blocks
+======
 
-    def getAge
-        return @age
-    end
+Methods in Ruby can take a code block as an argument. You can think of a code block as being an anonymous procedure passed to the called method; the called method will then call the block procedure as part of its execution.
 
-    def setAge(age)
-        @age = age
-    end
+Ruby uses blocks in many contexts where some operation is being performed on a sequence of values. For example, we can compute a factorial this way:
+
+{% highlight ruby %}
+c = 1
+(1..6).each do |n| c *= n end
+puts c
+{% endhighlight %}
+
+Note that the value (1..6) is an instance of the Range class. Its "each" method invokes a code block for each member of the range, passing the member as the argument to the block. The code block in this code is the part between "do" and "end"; the block has a single parameter "n" which receives the value of each member of the range in sequence.
+
+Note that we haven't declared any variable in this program: variables are created automatically as needed. (In other words, the first applied occurrence of a variable is its binding occurrence.) An uninitialized variable has a special "nil" value (like a null pointer in Java/C++).
+
+Ruby Literals
+=============
+
+Kinds of literal values in Ruby:
+
+The usual numeric literals:
+
+> |Kind|Examples|Class|
+> |----|--------|-----|
+> |fixed-precision integer|4, 17, 42|Fixnum|
+> |arbitrary-precision integer|1111111111111111111111111111111|Bignum|
+> |floating-point|001, 3.14159, 10e7|Float|
+
+All literal text, including single characters and strings of characters, are treated as Strings:
+
+> |Kind|Examples|Class|
+> |----|--------|-----|
+> |Single-quoted string|'a', 'hello world'|String|
+> |Double-quoted string|"a", "hello world\\n"|String|
+
+Double-quoted strings support a variety of escape sequences to represent special characters. Examples:
+
+> <table>
+> <col width="29%" />
+> <col width="43%" />
+> <thead>
+> <tr class="header">
+> <th align="left">Escape sequence</th>
+> <th align="left">Meaning</th>
+> </tr>
+> </thead>
+> <tbody>
+> <tr class="odd">
+> <td align="left">\n</td>
+> <td align="left">Newline character</td>
+> </tr>
+> <tr class="even">
+> <td align="left">\r</td>
+> <td align="left">Carraige-return character</td>
+> </tr>
+> <tr class="odd">
+> <td align="left">\f</td>
+> <td align="left">Form-feed character</td>
+> </tr>
+> <tr class="even">
+> <td align="left">\b</td>
+> <td align="left">&quot;Bell&quot;</td>
+> </tr>
+> <tr class="odd">
+> <td align="left">\\</td>
+> <td align="left">Literal backslash character</td>
+> </tr>
+> <tr class="even">
+> <td align="left">\&quot;</td>
+> <td align="left">Literal double-quote character</td>
+> </tr>
+> </tbody>
+> </table>
+
+Single-quoted strings only support two escape sequences:
+
+> |Escape sequence|Meaning|
+> |---------------|-------|
+> |\\'|Literal single-quote character|
+> |\\\\|Literal backslash character|
+
+Symbol literals are like enumeration values. They are members of the Symbol class:
+
+> |Kind|Examples|Class|
+> |----|--------|-----|
+> |symbol value|:foobar, :dog, :cat|Symbol|
+
+Regular Expressions
+===================
+
+Regular expression literals:
+
+> / *regular expression* /
+
+A regular expression's class is Regexp.
+
+Example:
+
+{% highlight ruby %}
+r = /foo|bar/
+puts r.class
+puts r.match('foo') ? 'yes' : 'no'
+puts r.match('bar') ? 'yes' : 'no'
+puts r.match('foobaz') ? 'yes' : 'no'
+puts r.match('blat') ? 'yes' : 'no'
+{% endhighlight %}
+
+This code produces the output
+
+    Regexp
+    yes
+    yes
+    yes
+    no
+
+The syntax and meaning of Ruby regular expressions is very similar to the syntax and meaning of [Perl Regular Expressions](http://perldoc.perl.org/perlre.html).
+
+Ignoring case in a regular expression
+-------------------------------------
+
+The "i" modifier causes a regular expression object to match case-insensitively:
+
+{% highlight ruby %}
+#! /usr/bin/ruby
+
+r = /foobar/i;
+
+if r.match('foobar')
+    puts "yes"
+end
+
+if r.match('FOObaR')
+    puts "yes"
 end
 {% endhighlight %}
 
-Defining getters and setters is tedious: they all look the same! They are also a source of unnecessary bugs: if we accidentally refer to the wrong field within a getter or setter, it won't work as expected.
+This program outputs
 
-Metaprogramming to the rescue
------------------------------
+    yes
+    yes
 
-Wouldn't it be nice if we could *generate* getters and setters as needed?
+Regexp search and replace
+-------------------------
 
-Recall two unusual characteristics of Ruby:
+The gsub method of the String class replaces all occurrences of substrings matching a regular expression with a given replacement string.
 
--   All classes are "open": the program can add new methods to any class at any time
--   Class declarations can contain executable statements: these are treated as method calls on the class object
+Example: removing HTML tags from a string.
+
+{% highlight ruby %}
+#! /usr/bin/ruby
+
+matchtag = /<[^>]*>/;
+
+STDIN.each do |line|
+    # Remove newline from end of line
+    line.chomp!
+
+    # Replace all occurrences of HTML tags from the string
+    line = line.gsub(matchtag, '')
+
+    # Print out line
+    puts line
+end
+{% endhighlight %}
+
+String interpolation
+====================
+
+A double-quoted string can have the textual representations of values stored in variables automatically substituted in the string. For example:
+
+{% highlight ruby %}
+s = 'Alice'
+puts "Hi #{s}"
+{% endhighlight %}
+
+produces the output
+
+    Hi Alice
+
+Note that arbitrary expressions may be used:
+
+{% highlight ruby %}
+n = 4
+puts "n + 5 is #{n + 5}"
+{% endhighlight %}
+
+The result of the expression is converted to a string (by calling the **to\_s** method) before being substituted into the result string.
+
+Classes and methods
+===================
+
+Ruby classes and methods work more or less the same way as in C++, Java, and other object-oriented languages.
+
+{% highlight ruby %}
+class Animal
+end
+
+class Dog < Animal
+    def noise
+        puts "Bark"
+    end
+end
+
+class Cat < Animal
+    def noise
+        puts "Meow"
+    end
+end
+
+fifi = Dog::new
+brutus = Cat::new
+
+fifi.noise
+brutus.noise
+{% endhighlight %}
+
+Ruby uses the convention that an identifier beginning with an at symbol (@) denotes a field:
+
+{% highlight ruby %}
+class Animal
+    def initialize(name)
+        @name = name
+    end
+end
+
+class Dog < Animal
+    def noise
+        puts "#{@name}: Bark"
+    end
+end
+
+class Cat < Animal
+    def noise
+        puts "#{@name}: Meow"
+    end
+end
+
+fifi = Dog::new("Fifi")
+brutus = Cat::new("Brutus")
+
+fifi.noise
+brutus.noise
+{% endhighlight %}
+
+Note that Animal's constructor method (initialize) is inherited by both Dog and Cat.
+
+From these examples you can see that Ruby is not too different than Java and C++ in the way it supports object-oriented programming. Except...
+
+Dynamic Object-Oriented Features in Ruby
+========================================
+
+Classes and objects in Ruby are much more dynamic and flexible than Java or C++.
+
+For example, we can add a method to an existing object at runtime:
+
+{% highlight ruby %}
+def fifi.walkies
+    puts "#{@name} goes for walkies"
+end
+{% endhighlight %}
+
+The method call
+
+{% highlight ruby %}
+fifi.walkies
+{% endhighlight %}
+
+produces the output
+
+    Fifi goes for walkies
+
+However, the code
+
+{% highlight ruby %}
+rex = Dog::new("Rex")
+rex.walkies
+{% endhighlight %}
+
+Produces the following error:
+
+    ./animals.rb:34: undefined method `walkies' for #<Dog:0x100ef49c @name="Rex"> (NoMethodError)
+
+because plain instances of the Dog class do not support the walkies method.
+
+We can also define a method within a class whose purpose is to handle all method invocations where a method cannot be found through normal virtual dispatch.
 
 Example:
 
 {% highlight ruby %}
 #! /usr/bin/ruby
 
-class Object
-    def self.sayhello
-        puts "Hello!"
-        puts "self.class is #{self.class}"
-        puts "This class is #{self.name}"
+class All_Method
+    def method_missing(method, *args)
+        method_name = method.to_s
+        print method_name
+        args.each do |arg|
+            print " #{arg.to_s}"
+        end
+        print "\n"
     end
-end
-
-class Person
-    sayhello
-end
-
-class Vehicle
-    sayhello
 end
 {% endhighlight %}
 
-The output of the program is
-
-    Hello!
-    This class is Person
-    Hello!
-    This class is Vehicle
-
-Things to note:
-
--   This code adds a new class method (i.e., static method) called **sayhello** to the built-in **Object** class, which is a superclass of every other class
--   The **Person** and **Vehicle** classes call this method in their declarations
--   When executed, the **sayhello** method is called on the **Class** object for the class being declared
-
-Now, the stage is set for metaprogramming: what if a class called a method as part of its declaration (like the calls to **sayhello** above, but that method *added more methods to the class*? Now we are metaprogramming!
-
-Let's use metaprogramming to generate getters and setters for fields whose names are specified by a list of symbols.
+The code
 
 {% highlight ruby %}
-#! /usr/bin/ruby
+a = All_Method::new
 
-class Object
-    def self.gen_getters_and_setters(*names)
-        names.each do |name|
-            fieldname_sym = "@#{ name }".to_sym
-
-            setter = Proc.new do |value|
-                self.instance_variable_set(fieldname_sym, value)
-            end
-            self.send(:define_method, "set_#{ name }", setter)
-
-            getter = Proc.new do
-                return self.instance_variable_get(fieldname_sym)
-            end
-            self.send(:define_method, "get_#{ name }", getter)
-        end
-    end
-end
-
-class Person
-    gen_getters_and_setters :name, :age
-
-    def initialize(name, age)
-        @name = name
-        @age = age
-    end
-
-    # Note: getters and setters not defined explicitly!
-end
-
-p = Person::new("Dave", 41)
-puts "Original age is: #{p.get_age}"
-
-p.set_age(42)
-puts "Happy birthday, your age is now #{p.get_age}"
+a.hi_there
 {% endhighlight %}
 
-A few things to note:
+produces the output
 
--   The asterisk on the \***names** parameter allows it to capture a variable number of arguments
--   The **instance\_variable\_set** and **instance\_variable\_get** methods allow access to a field whose name is specified as a symbol (which we compute by constructing a string equal to the field name and converting the string to a symnol)
--   The **define\_method** method of the **Class** class defines a new instance method. Because it is a private method, we can't call it directly, but instead must use the class object's **send** method to call it indirectly. (This appears to be necessary because **define\_method** is private, and can't be called directly.)
+    hi_there
 
-Metaprogramming in real life
-============================
+The code
 
-In practice, you won't have to define facilities like the **gen\_getters\_and\_setters** method described above. Ruby already provides similar facilities: see **attr\_reader** and **attr\_accessor** in Ruby's [Module](http://ruby-doc.org/core-1.9.3/Module.html) class. (**Module** is the superclass of **Class**: so, these facilities are available to all Ruby classes and mixins.)
+{% highlight ruby %}
+a.i_can_do_anything 'a', 'b', 'c'
+{% endhighlight %}
+
+produces the output
+
+    i_can_do_anything a b c
+
+Using this technique, we can define classes that decide what kinds of methods they support at run time rather than compile time.
+
+Note that this would be difficult/impossible in a language that requires static type checking.

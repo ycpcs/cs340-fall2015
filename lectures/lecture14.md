@@ -1,183 +1,217 @@
 ---
 layout: default
-title: "Lecture 14: Erlang"
+title: "Lecture 14: Prolog"
 ---
 
-Example source code: [series.erl](series.erl), [sort.erl](sort.erl)
+Prolog is a *declarative programming language* based on logical inference. It is the main example of a language in the *logic programming* paradigm.
 
-Erlang
-======
+Download **tuProlog**, a Prolog interpreter written in Java:
 
-The origin of the name is both **Er**icsson **Lang**uage and the mathematician [Agner Erlang](http://en.wikipedia.org/wiki/Agner_Krarup_Erlang). It was invented by Joe Armstrong in 1986 for use in telephone exchange systems. The requirements of this application domain (fault-tolerance, concurrency) significantly influenced the language design.
+> [tuProlog.zip](../resources/tuProlog.zip)
 
-Characteristics:
+Extract the contents of the zip file, and double-click the file **bin/2p.jar** to start the Prolog interpreter. Or, cd to the **bin** directory and run the command
 
--   functional: a variable may be assigned a value only once
--   dynamically-typed
--   concurrency implemented by lightweight processes (like threads, but no shared memory) which communicate by exchanging messages
+    java -jar 2p.jar
 
-Processes in Erlang are similar to actors in Scala.
+in a shell window.
 
-Syntax, Data types
-==================
+Atoms
+=====
 
-Erlang is a descendant of Prolog, and the syntax is very similar. Like Prolog, Erlang supports pattern matching to extract data values from composite data values such as lists and tuples.
+Symbols:
 
-The syntax is very similar to Prolog:
+    homer
+    marge
+    bart
+    lisa
+    maggie
 
--   statements end with a period
--   variable names must begin with an upper-case letter
+Note: names of symbols *must* be written in lower-case letters.
 
-The built-in data types in Erlang are similar to those supported by Prolog. They include
+Numbers:
 
--   symbols
--   numbers
--   lists
--   tuples (fixed-size records)
--   bit strings
+> 1 2 3
 
-Tuples
-------
-
-The tuple data type in Erlang has no direct equivalent in Prolog. A tuple is a fixed-length series of values. Arbitrary record data structures can be created using tuples.
-
-An important convention in Erlang is to use a symbol as the first member of a tuple as a tag to indicate the type of data the tuple contains.
-
-For example:
-
-{% highlight erlang %}
-{ lineitem, {item, "Bananas"}, {quantity, 44} }
-{% endhighlight %}
-
-This is a tuple marked with the symbol (tag) **bananas**, with two nested tuples marked with the symbols **item** and **quantity**. This tuple might be part of a data structure used in an inventory-tracking system.
-
-We could assign this tuple to a variable:
-
-{% highlight erlang %}
-Item = { lineitem, {item, "Bananas"}, {quantity, 44} }.
-{% endhighlight %}
-
-Things get interesting when we use pattern matching to extract information from the tuple:
-
-{% highlight erlang %}
-{lineitem, {item, "Bananas"}, {quantity, HowMany}} = Item.
-{% endhighlight %}
-
-This statement assigns the quantity associated with the **Item** tuple to the variable **HowMany**. This is the same idea as unification in Prolog: Erlang will try to make the left hand side equivalent to the right hand side.  It is also reminscent of vector destructuring in Clojure.  Constant values such as symbols and strings must be exactly equal for the match to succeed. Variables will match whatever value they correspond to on the other side.
-
-Functions
+Relations
 =========
 
-Functions in Erlang are specified in much the same way as inference rules in Prolog.
+A relation is a table of facts. Here is a **father** relation
 
-Annoying detail
----------------
+> <table>
+> <col width="13%" />
+> <col width="15%" />
+> <tbody>
+> <tr class="odd">
+> <td align="left">homer</td>
+> <td align="left">bart</td>
+> </tr>
+> <tr class="even">
+> <td align="left">homer</td>
+> <td align="left">lisa</td>
+> </tr>
+> <tr class="odd">
+> <td align="left">homer</td>
+> <td align="left">maggie</td>
+> </tr>
+> <tr class="even">
+> <td align="left">grandpa</td>
+> <td align="left">homer</td>
+> </tr>
+> <tr class="odd">
+> <td align="left">grandpa</td>
+> <td align="left">herb</td>
+> </tr>
+> </tbody>
+> </table>
 
-Erlang has an interactive interpreter called **erl** in which you can enter Erlang statements and have them evaluated. However, you cannot define functions interactively. Instead, they must be defined in a separate source file (*module*) and compiled.
+The first item in each tuple of the relation represents a person who is a father. The second item is a person who is a child of that father.
 
-Example function
-----------------
+Relations can thus be formed as a collection of explicit facts, called *ground truths*. Each fact is a tuple belonging to the relation. In Prolog, we specify ground truths as
 
-Because Erlang is a functional language, all computations involving repetition must be done recursively. Example: computing the nth Fibonacci number in Erlang.
+> relation ( *list of atoms* )
 
-Here is a module defined in a source file called **series.erl**:
+Here are some ground truths:
 
-{% highlight erlang %}
--module(series).
--export([fib/1]).
+    father(homer, bart).
+    father(homer, lisa).
+    father(homer, maggie).
+    father(grandpa, homer).
+    father(grandpa, herb).
 
-fib(0) -> 1;
-fib(1) -> 1;
-fib(N) -> fib(N-2) + fib(N-1).
-{% endhighlight %}
+    mother(marge, bart).
+    mother(marge, lisa).
+    mother(marge, maggie).
+    mother(grandma, homer).
 
-To iteractively compile this module and execute the **fib** function in **erl**:
+Inference rules
+===============
 
-<pre>
-4> <b>c(series).</b>
-{ok,fib}
-5> <b>series:fib(6).</b>
-13
-</pre>
+An inference rule allows new facts to be inferred from existing facts.
 
-The built-in **c** function compiles a module whose name is specified as a symbol. Note that when an Erlang function is called, it must be prefixed with the name of the module in which it is defined. So, **series:fib** means to call a function called **fib** defined in a module called **series**.
+General form:
 
-More efficient version
-----------------------
+> *conclusion* :- *hypothesis*.
 
-As you may recall from CS 201, the naive recursive implementation of **fib** has exponential running time. We can compute it more efficiently by avoiding revisiting the same recursive subproblem multiple times.
+Facts and inference rules may use *variables*. A variable is a name, in upper-case letters, which stands for some possible member of a tuple in a relation.
 
-The idea is to use a tail-recursive implementation using an accumulator parameter. The base cases of the tail recursive helper function (**fibtailrecwork**) are the same as the original version. The recursive case's **Cur** parameter counts up from 2 to **N**, keeping track of the current Fibonacci number (**Accum**) and the previous Fibonacci number (**Prev**). Until **Cur** = **N**, recursive calls are made which compute the next Fibonacci number.
+Example: X is Y's paternal grandfather if there exists Z such that X is Z's father, and Z is Y's father:
 
-Note that in the base cases, we use the special variable name **\_** to indicate parameters that aren't used. You can think of this as the "don't care" variable name.
+    paternal_grandfather(X, Y) :- father(X, Z), father(Z, Y).
 
-Here's the complete module:
+Note that X, Y, and Z are all variables, and the comma means "and" in the sense of a logical conjunction.
 
-{% highlight erlang %}
--module(series).
--export([fib/1, fibtailrec/1]).
+We can describe a paternal grandmother in a similar way:
 
-fib(0) -> 1;
-fib(1) -> 1;
-fib(N) -> fib(N-2) + fib(N-1).
+    paternal_grandmother(X, Y) :- mother(X, Z), father(Z, Y).
 
-fibtailrec(N) -> fibtailrecwork(N, 2, 1, 2).
+Here is a possible set of inference rules:
 
-fibtailrecwork(0, _, _, _) -> 1;
-fibtailrecwork(1, _, _, _) -> 1;
-fibtailrecwork(N, N, _, Accum) -> Accum;
-fibtailrecwork(N, Cur, Prev, Accum) -> fibtailrecwork(N, Cur+1, Accum, Prev+Accum).
-{% endhighlight %}
+    samefather(X, Y) :- father(Q, X), father(Q, Y).
+    samemother(X, Y) :- mother(Q, X), mother(Q, Y).
 
-Merge sort in Erlang
---------------------
+    siblings(X,Y) :- (samemother(X,Y); samefather(X,Y)), X \= Y.
 
-Here is merge sort in Erlang. It is similar to [merge sort in Prolog](lecture13.html), although simpler because functions in Erlang return values rather than making logical assertions.
+    paternal_grandfather(X, Y) :- father(X, Q), father(Q, Y).
+    paternal_grandmother(X, Y) :- mother(X, Z), father(Z, Y).
 
-First, the **merge** function:
+Note the definition of the inference rule defining the **siblings** relation:
 
-{% highlight erlang %}
-merge([], Any) -> Any;
-merge(Any, []) -> Any;
-merge([X|RestL], [Y|RestR]) ->
-  if
-    X<Y  -> [X | merge(RestL, [Y|RestR])];
-    true -> [Y | merge([X|RestL], RestR)]
-  end.
-{% endhighlight %}
+    siblings(X,Y) :- (samemother(X,Y); samefather(X,Y)), X \= Y.
 
-The base cases state that merging an empty list with any other list results in the other list.
+The semicolon means "or" in the sense of logical disjunction. That is because two people are siblings if *either* they share the same father or mother.  Also, the **\\=** operator means "not equals", preventing any person from being considered to be his or her own sibling.  (Prolog allows the same value to be bound to multiple variables.)
 
-The recursive case uses an **if** expression to test which of the head elements of the two lists being merged is smaller, and then constructs a new list with the appropriate head element.
+Queries
+=======
 
-Note that this merge function could be improved: it is not tail recursive (the construction of the result list happens after the recursive call to **merge** completes).
+We can type in a potential fact, and based on the ground truths and the available inference rules, Prolog will attempt to find a derivation that proves that the fact is true.
 
-Next, the **mergesort** function:
+Example:
 
-{% highlight erlang %}
-mergesort([]) -> [];
-mergesort([A]) -> [A];
-mergesort(List) ->
-  N = length(List),
-  % Sublist containing the first N/2 elements.
-  Left = lists:sublist(List, N div 2),
-  % Sublist containing the remaining elements.
-  % Note: list elements are indexed starting at 1, not 0.
-  Right = lists:sublist(List, (N div 2) + 1, N - (N div 2)),
-  % Recursively sort left and right sublists.
-  LeftSorted = mergesort(Left),
-  RightSorted = mergesort(Right),
-  % Merge the results of sorting the left and right sublists.
-  merge(LeftSorted, RightSorted).
-{% endhighlight %}
+    father(homer, bart).
 
-Again, this function is quite a bit simpler than the equivalent version in Prolog because it returns a value instead of making a logical assertion. Note that we can use a series of expressions separated by commas to define the recursive case, and the result of the last expression is used as the result of the function.
+This query is true because a ground truth matching the query exists.
 
-Take a look at [sort.erl](sort.erl) to see the entire module.
+The query
 
-Example of calling the **mergesort** function in the **erl** interpreter:
+    father(marge, bart).
 
-<pre>
-40> <b>sort:mergesort([11, 86, 2, 69, 22, 39, 85, 57, 78, 76]).</b>
-[2,11,22,39,57,69,76,78,85,86]
-</pre>
+is false because this fact cannot be derived using the available ground truths and inference rules.
+
+In general, answering a query requires constructing a chain of inferences. For example, the query
+
+    siblings(bart, lisa).
+
+is true because the facts
+
+    mother(marge, bart).
+    mother(marge, lisa).
+
+are ground truths, enabling the query
+
+    samemother(bart, lisa).
+
+to be true if **marge** is substituted for the variable **Q** in the rule defining the **samemother** relation. This, in turn, is sufficient to deduce that
+
+    siblings(bart, lisa).
+
+is true.
+
+A more interesting query
+
+    siblings(homer, herb).
+
+is true because
+
+    father(grandpa, homer).
+    father(grandpa, herb).
+
+implies
+
+    samefather(homer, herb).
+
+which is sufficient to deduce that
+
+    siblings(homer, herb).
+
+is true. Note that the query
+
+    samemother(homer, herb).
+
+is false, because there is no derivation for this fact.
+
+Queries with unknowns
+---------------------
+
+The real power of Prolog can be seen when a query contains one or more variables, which represent unknowns: for each variable, Prolog will attempt to find a value which can be substituted for the variable in order to make the query true.
+
+For example, the query:
+
+    paternal_grandfather(X, bart).
+
+yields the answer
+
+    yes.
+    X / grandpa
+    Solution: paternal_grandfather(grandpa,bart)
+
+showing that **grandpa** can be substituted for the variable **X** in order to make the query true.
+
+Note that a query with variables could lead to multiple solutions.  For example, the query
+
+    siblings(X, bart).
+
+yields two solutions, one where **lisa** is substituted for **X**, and one where **maggie** is substituted for **X**.
+
+Declarative programming
+=======================
+
+Prolog is a declarative programming language because we never specify *how* we want a computation to be performed. We simply use ground truths and inference rules to describe a problem, and allow the inference algorithm to deduce a solution.
+
+Declarative programming is nice because it allows us to specify a problem at a higher level.
+
+Other declarative programming languages:
+
+-   [Makefiles](http://en.wikipedia.org/wiki/Makefile), a language for directing the compilation of software
+-   [SQL](http://en.wikipedia.org/wiki/Sql), the database query language
+
+The language for Makefiles is especially interesting because, like Prolog, it is a logic programming language.

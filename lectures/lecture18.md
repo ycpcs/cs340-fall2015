@@ -1,96 +1,202 @@
 ---
 layout: default
-title: "Lecture 18: Ruby Arrays, Hashes, Mixins"
+title: "Lecture 18: Concurrency in Erlang"
 ---
 
-Example code:
+Example code: [echo.erl](echo.erl), [mandelbrot.erl](mandelbrot.erl), [rowactor.erl](rowactor.erl), [mandelbrotactor.erl](mandelbrotactor.erl)
 
-> [numlist.rb](numlist.rb) - defining a class with an **each** method
->
-> [findmin.rb](findmin.rb) - using **inject** to find the minimum value in a sequence
+Concurrency in Erlang
+=====================
 
-Ruby Arrays
-===========
+Concurrency in Erlang is expressed using *processes*. A process is an independent thread of control that does not share memory with any other process: so, processes are isolated from each other. Processes communicate with each other by sending messages.
 
-Ruby arrays - instances of the **Array** class. Documentation:
+Processes in Erlang
+-------------------
 
-> <http://www.ruby-doc.org/core-1.9.3/Array.html>
+A process is started by calling a function that takes no parameters. Ths function should use the **receive** construct to wait for a message to arrive, process the message, and then call itself recursively. (As long as the recursive call is in tail position, this will not cause growth of the call stack.)
 
-Arrays have a literal notation - a series of comma-separated values within square brackets:
+Here is a very simple actor: one that simply prints out any messages it receives:
 
-{% highlight ruby %}
-arr = [1, 2, 3]
+{% highlight erlang %}
+-module(echo).
+-export([loop/0]).
+
+loop() ->
+
+  receive
+
+    Any -> io:format("Echo: ~w~n", [Any]), loop()
+
+  end.
 {% endhighlight %}
 
-Elements may be accessed using the subscript operator
+The **receive** construct does pattern matching on received messages. In the echo actor above, the only pattern is the variable **Any**, which will match any value sent to the process.
 
-{% highlight ruby %}
-puts arr[0]    # prints "1"
+Example of compiling and running this process:
+
+<pre>
+1> <b>c(echo).</b>
+{ok,echo}
+2> <b>EchoPid = spawn(fun echo:loop/0).</b>
+<0.39.0>
+3> <b>EchoPid ! "Hello".</b>
+Echo: [72,101,108,108,111]
+"Hello"
+4> <b>EchoPid ! {hey, there}.</b>
+Echo: {hey,there}
+{hey,there}
+</pre>
+
+Erlang processes are created by the built-in **spawn** function, and identified by *process ids*. To send a message to a process, the syntax is
+
+> *ProcessId* ! *message*
+
+Example: The Mandelbrot Set using Erlang processes
+--------------------------------------------------
+
+As a complete example, let's do the Mandelbrot set computation using Erlang actors. First, we need some functions to do complex arithmetic and to compute iteration counts for a row of complex numbers:
+
+{% highlight erlang %}
+-module(mandelbrot).
+-export([complexadd/2, complexmul/2, complexmagnitude/1,
+         computeitercount/1, computerow/1]).
+
+complexadd({A, B}, {C, D}) -> {A+C, B+D}.
+
+complexmul({A, B}, {C, D}) -> {A*C - B*D, B*C + A*D}.
+
+complexmagnitude({A, B}) -> math:sqrt(A*A + B*B).
+
+computeitercountwork(C, Z, Count) ->
+  MagnitudeOfZ = complexmagnitude(Z),
+  if
+  (Count >= 1000) or (MagnitudeOfZ > 2.0) -> Count;
+  true -> computeitercountwork(C, complexadd(complexmul(Z, Z), C), Count + 1)
+  end.
+
+computeitercount(C) -> computeitercountwork(C, {0.0, 0.0}, 0).
+
+computerowwork(RowNum, Y, XStart, XInc, CurCol, Accum) ->
+  if
+  (CurCol < 0) -> {rowresult, RowNum, Accum};
+  true ->
+    X = XStart + (CurCol * XInc),
+    IterCount = computeitercount({X, Y}),
+    computerowwork(RowNum, Y, XStart, XInc, CurCol - 1, [IterCount | Accum])
+  end.
+
+computerow({row, RowNum, Y, XStart, XInc, NumCols}) ->
+  computerowwork(RowNum, Y, XStart, XInc, NumCols-1, []).
 {% endhighlight %}
 
-The **each** method is the usual way to iterate over the values in an array:
+Next, an actor process which receives messages specifying rows of iteration counts to be computed, computes them, and sends the results back to a result collector process:
 
-{% highlight ruby %}
-puts.each {|n| puts n } # prints "1", "2", "3" on separate lines
+{% highlight erlang %}
+-module(rowactor).
+-export([loop/0]).
+
+loopwork(ResultCollector) ->
+  receive
+
+    % The result collector process has sent us its pid.
+    {resultcollectorpid, ResultCollectorPid} ->
+      loopwork(ResultCollectorPid);
+
+    % Received a row to compute: compute it and send result back to result collector.
+    {row, RowNum, Y, XStart, XInc, NumCols} ->
+      ResultCollector ! mandelbrot:computerow({row, RowNum, Y, XStart, XInc, NumCols}),
+      loopwork(ResultCollector)
+
+  end.
+
+loop() -> loopwork(unknown).
 {% endhighlight %}
 
-Ruby Hashes
-===========
+Note one interesting detail: the first message the row actor process should receive is a tuple of the form
 
-Ruby hashes: instances of the **Hash** class. Documentation:
+> {resultcollectorpid, *Pid*}
 
-> <http://www.ruby-doc.org/core-1.9.3/Hash.html>
+which specifies the process id of the process to which computed row results should be sent. Once this message is received, all subsequent calls to **loopwork** will have this process id available.
 
-Hashes associate a set of keys with corresponding values. As with arrays, hashes have a literal notation - a comma-separated list of key/value pairs in curly braces:
+Finally, an actor which receives a message describing a region of the complex plane, creates row actors, sends work to the row actors, and waits for row results to be sent back:
 
-{% highlight ruby %}
-hash = { 'oranges' => 12, 'bananas' => 7, 'blueberries' => 45 }
+{% highlight erlang %}
+-module(mandelbrotactor).
+-export([loop/0]).
+
+% Send work to a specified row actor process.
+sendwork(Pid, XMin, XMax, YMin, YMax, NumCols, NumRows, NumProcs, RowNum) ->
+  if
+  % We're done if there is no more work to send
+  (RowNum >= NumRows) -> true;
+  true ->
+     % Send one row
+     Pid ! {row, RowNum, YMin + (RowNum*((YMax-YMin)/NumRows)),
+                 XMin, (XMax-XMin)/NumCols,
+                 NumCols},
+     % Send the rest of the rows
+     sendwork(Pid, XMin, XMax, YMin, YMax, NumCols, NumRows,
+              NumProcs, RowNum + NumProcs)
+  end.
+
+% Start row actor processes.
+startprocs(_, _, _, _, _, _, N, N, Pids) -> Pids;
+startprocs(XMin, XMax, YMin, YMax, NumCols, NumRows, NumProcs, CurProc, Pids) ->
+  % Spawn a process to compute rows
+  Pid = spawn(fun rowactor:loop/0),
+  % Inform process where to send results (back to this process) 
+  Pid ! {resultcollectorpid, self()},
+  % Send the process the rows it should compute
+  sendwork(Pid, XMin, XMax, YMin, YMax, NumCols, NumRows, NumProcs, CurProc),
+  % Spawn the rest of the processes
+  startprocs(XMin, XMax, YMin, YMax, NumCols, NumRows, NumProcs, CurProc + 1,
+             [Pid | Pids]).
+
+loop() ->
+  receive
+
+    {start, XMin, XMax, YMin, YMax, NumCols, NumRows, NumProcs} ->
+
+      % Start processes
+      startprocs(XMin, XMax, YMin, YMax, NumCols, NumRows,
+                 NumProcs, 0, []),
+      loop();
+
+    {rowresult, RowNum, Data} ->
+
+      % Just print out the received data
+      io:format("~w: ~w~n", [RowNum, Data]), loop()
+
+  end.
 {% endhighlight %}
 
-To access the value associated with a key, use the subscript operator:
+Note that completed row results are just printed out using **io:format**, in whatever order they arrive.
 
-{% highlight ruby %}
-puts hash['oranges']    # prints "12"
-{% endhighlight %}
+Example run:
 
-Iterating over the keys and/or values can be done with the **each\_key**, **each\_pair**, and **each\_value** methods. Note that because a **Hash** object is implemented as a hash table, there is no guaranteed ordering of keys:
+<pre>
+1> <b>c(mandelbrot).</b>
+{ok,mandelbrot}
+2> <b>c(rowactor).</b>
+{ok,rowactor}
+3> <b>c(mandelbrotactor).</b>
+{ok,mandelbrotactor}
+4> <b>Pid = spawn(fun mandelbrotactor:loop/0).</b>
+<0.49.0>
+5> <b>Pid ! {start, -2, 2, -2, 2, 10, 10, 3}.</b>
+{start,-2,2,-2,2,10,10,3}
+2: [1,2,2,3,3,3,2,2,2,2]
+0: [1,1,1,1,1,2,1,1,1,1]
+3: [1,3,3,4,6,18,4,2,2,2]
+1: [1,1,2,2,2,2,2,2,2,1]
+5: [1000,1000,1000,1000,1000,1000,7,3,2,2]
+8: [1,2,2,3,3,3,2,2,2,2]
+6: [1,3,7,7,1000,1000,9,3,2,2]
+9: [1,1,2,2,2,2,2,2,2,1]
+4: [1,3,7,7,1000,1000,9,3,2,2]
+7: [1,3,3,4,6,18,4,2,2,2]
+</pre>
 
-{% highlight ruby %}
-hash.each_key {|key| puts key }
+In this example run, we used three row actor processes to compute 10 rows. Each row actor computes every *n*th row, where *n* is the number of processes.
 
-# prints "blueberries", "bananas", "oranges"
-# on separate lines
-{% endhighlight %}
-
-Mixins
-======
-
-A *mixin* is a module (collection of methods) that may be added ("mixed in") to any class or object.
-
-One important Ruby mixin is **Enumerable**. Many of the useful methods in the built-in **Array** class are actually provided by **Enumerable**.
-
-The **Enumerable** mixin provides a number of methods for operating on sequences of values. This mixin requires the class or object to support the **each** method, which given a block generates all of the members of the sequence.
-
-Example: the built-in **Array** class uses the **Enumerable** mixin to provide a number of methods. For example, the **inject** method invokes a block for each element in the collection. The value computed by the block is then passed as an argument to the invocation of the block on the *next* element, until the end of the sequence is reached, at which point the result of the last invocation of the block is the overall result.
-
-For example, we can use inject to compute the sum of an array of numbers:
-
-{% highlight ruby %}
-arr = [9, 6, 8, 1, 5]
-sum = arr.inject(0) {|sum, i| sum + i}
-puts sum    # prints 29
-{% endhighlight %}
-
-Note that the initial value of **sum** (0), which is the variable that is "carried" by the computation, is passed explicitly to the **inject** method. If we call the **inject** method without an argument, then it would use the first element of the sequence for this value, and start by invoking the block on the *second* element of the sequence. So, computing the sum could also be done as
-
-{% highlight ruby %}
-arr.inject {|sum, i| sum + i}
-{% endhighlight %}
-
-Another insanely useful method added by the **Enumerable** mixin is **map**, which returns an array formed by invoking a block on each element of the sequence and appending the result to the array. For example:
-
-{% highlight ruby %}
-arr = [1, 2, 3]
-arr2 = arr.map {|n| n * 2}
-arr2.each {|n| puts n}  # prints "2", "4", "6" on separate lines
-{% endhighlight %}
+As you can see, the row results do not come back in sorted order, so some additional work is needed to put them in order.

@@ -1,149 +1,250 @@
 ---
 layout: default
-title: "Lecture 15: More Erlang"
+title: "Lecture 15: More Prolog"
 ---
 
-Example code: [map.erl](map.erl), [filter.erl](filter.erl)
+Recursion
+=========
 
-Anonymous Functions
-===================
+Prolog inference rules can be recursive. For example:
 
-Many languages, including Clojure, Scala, and Ruby, have the ability to define "anonymous" blocks of code. An important use of such code blocks is to transform a series of values from a collection (e.g., passing an anonymous function to the Clojure **map** function.)
+    ancestor(X, Y) :- father(X, Y).
+    ancestor(X, Y) :- mother(X, Y).
+    ancestor(X, Y) :- father(X, Z), ancestor(Z, Y).
+    ancestor(X, Y) :- mother(X, Z), ancestor(Z, Y).
 
-Erlang supports anonymous functions. Because Erlang is dynamically-typed, an anonymous function can be assigned to a variable (Clojure allows this as well). You can think of an anonymous function as being a value, in much the same way that numbers, lists, and tuples are values in Erlang. Like all other values, they can be passed to functions and returned from functions.
+These rules establish that *X* is *Y*'s ancestor if
+
+-   *X* is *Y*'s father or mother (first two rules, not recursive), or
+-   there is some *Z* such that *X* is *Z*'s father and *Z* is *Y*'s ancestor, or
+-   there is some *Z* such that *X* is *Z*'s mother and *Z* is *Y*'s ancestor
+
+Example query (using the ground truths from the [previous lecture](lecture14.html):
+
+<pre>
+| ?- <b>ancestor(grandpa, bart).</b>
+
+true ? 
+
+yes
+| ?- <b>ancestor(grandpa, homer).</b>
+
+true ? 
+
+yes
+| ?- <b>ancestor(grandpa, marge).</b>
+
+no
+</pre>
+
+Numbers
+=======
+
+A prolog variable can have a numeric value (as opposed to a symbol). The **is** keyword binds a variable to an expression with a numeric value.
 
 Example:
 
 <pre>
-1> <b>Add1 = fun(N) -> N+1 end.</b>
-#Fun<erl_eval.6.80247286>
-2> <b>Add1(3).</b>
-4
+| ?- <b>A is 2 + 3.</b>
+
+A = 5
+
+yes
 </pre>
 
-Here, we defined a function of one parameter **N** that adds 1 to its parameter and returns the result.
+Tuples and Lists
+================
 
-More interesting example:
+A tuple is a sequence with a fixed number of values. A list is a sequence with an arbitrary number (zero or more) of values.
+
+A tuple:
+
+    (a, b, c)
+
+A list:
+
+    [a, b, c]
+
+Lists have an alternate syntax:
 
 <pre>
-3> <b>AddN = fun(N) -> fun(X) -> N+X end end.</b>
-#Fun<erl_eval.6.80247286>
-4> <b>Add12 = AddN(12).</b>
-#Fun<erl_eval.6.80247286>
-5> <b>Add12(11).</b>
-23
+[<i>FirstElement</i>|<i>RestOfList</i>]
 </pre>
 
-In this example, the **AddN** function takes a parameter **N** and returns a function that adds **N** to its parameter **X**. By calling **AddN** with the argument value 12, we create a function that adds 12 to its parameter.
+The alternate syntax is very useful for writing inference rules that operate on lists.
 
-The concept of returning a function from a function is called *currying*.
+As an example: finding the smallest number in a list of numbers.
 
-Transforming Lists
-==================
+First, we can define a **min** rule which, for a pair of numbers, specifies which is the minimum:
 
-Anonymous functions can be applied to lists to select or transform the values in the list.
+    min(A, A, B) :- A =< B.
+    min(B, A, B) :- B =< A.
 
-One way to transform a list is to *map* a function onto each element of the list, producing a list of transformed values as a result.
+Read the first rule as "A is the minimum of A and B if A \<= B".
 
-Here is a possible implementation of a map function:
-
-{% highlight erlang %}
--module(map).
--export([map/2]).
-
-map(_, []) -> [];
-map(F, [First|Rest]) -> [F(First) | map(F, Rest)].
-{% endhighlight %}
-
-The implementation is quite simple. The base case is an empty list, where the result is simply the empty list. In the recursive case, the function *F* is applied to the first element of the list, and prepended onto the list that results from recursively applying *F* to the rest of the list.
-
-Testing it on a list:
+Examples:
 
 <pre>
-8> <b>map:map(fun(N) -> N*2 end, [1, 2, 3]).</b>
-[2,4,6]
+| ?- <b>min(What, 2, 3).</b>
+
+What = 2 ? 
+
+yes
+| ?- <b>min(What, 3, 2).</b>
+
+What = 2
+
+yes
 </pre>
 
-Note that the implementation of **map** above is not tail-recursive. Here is a tail-recursive version:
+We can define two rules for finding the smallest number in a list of numbers:
 
-{% highlight erlang %}
--module(map).
--export([map/2]).
+    smallest(A, [A|[]]).
+    smallest(Min, [A|B]) :- smallest(SB, B), min(Min, A, SB).
 
-mapwork(_, [], Accum) -> lists:reverse(Accum);
-mapwork(F, [First|Rest], Accum) -> mapwork(F, Rest, [F(First)|Accum]).
+The first rule specifies that in a list where *A* is the only element, it is the smallest element. This serves as a base case.
 
-map(F, L) -> mapwork(F, L, []).
-{% endhighlight %}
+The second rule specifies that for a list where *A* is the first element and *B* is a list containing an unspecified number of elements, the minimum value *Min* is the minimum of *A* and *SB*, where *SB* is the smallest value in *B*.
 
-Because the accumulator builds the result list with the transformed elements in reverse order, we apply the built-in **lists:reverse** function before returning the final result.
-
-Another useful list-transformation technique is filtering a list to retain or discard elements matching a specified predicate:
-
-{% highlight erlang %}
--module(filter).
--export([retain/2, discard/2]).
-
-filterwork(_, [], _, Accum) -> lists:reverse(Accum);
-filterwork(F, [First|Rest], Keep, Accum) ->
-  Test = F(First),
-  if
-    (Test and Keep) or (not Test and not Keep) ->
-       filterwork(F, Rest, Keep, [First | Accum]);
-    true -> filterwork(F, Rest, Keep, Accum)
-  end.
-
-retain(F, List) -> filterwork(F, List, true, []).
-
-discard(F, List) -> filterwork(F, List, false, []).
-{% endhighlight %}
-
-Examples of using these functions:
+Example:
 
 <pre>
-18> <b>filter:retain(fun(N) -> N > 4 end, [1, 2, 3, 4, 5, 6, 7, 8]).</b>
-[5,6,7,8]
-19> <b>filter:discard(fun(N) -> N > 4 end, [1, 2, 3, 4, 5, 6, 7, 8]).</b>
-[1,2,3,4]
+| ?- <b>smallest(What, [11, 86, 2, 69, 22, 39, 85, 57, 78, 76]).</b>
+
+What = 2 ? 
+
+yes
 </pre>
 
-Built-in versions
------------------
+Example: Sorting
+================
 
-It's interesting to build our own list-transformation functions, but in practice it's better to use the built-in implementations, which are **list::map**, **lists:takewhile**, and **lists:dropwhile**.
+Now that we've defined how to find the smallest item in a list, we define how to sort a list.
 
-List Comprehensions
-===================
+The base case is that sorting a list with no elements is the empty list:
 
-*List comprehensions* are a concise syntax for describing transformations of one or more lists.
+    sorted([], []).
 
-In the following examples, the variable **List** is defined as:
+The recursive case defines what it means to sort a list with at least one element:
 
-    List = [1, 2, 3, 4, 5, 6, 7, 8].
+    sorted([Min|RestSorted], List) :-
+      smallest(Min, List),
+      append(BeforeMin, [Min|AfterMin], List),
+      append(BeforeMin, AfterMin, RestUnsorted),
+      sorted(RestSorted, RestUnsorted).
 
-Example: double each element in a list:
+This rule states that the sorted form of a list is a list containing at least one element is the list where the first element is the minimum value in the original list, and the subsequent values are the rest of the elements in the original list in sorted order.
+
+To extract the minimum element from the list, we use the built-in **append** rule. The assertion
+
+    append(A, B, C)
+
+says that *C* is the result of concatenating the lists *A* and *B*. We use this rule twice. The first use,
+
+    append(BeforeMin, [Min|AfterMin], List)
+
+states that *List* is the result of concatenating two lists. The first list is *BeforeMin*. The second list has *Min* (the minimum element of the overall list) as its first element, and *AfterMin* as the remaining elements. This effectively gives us lists *BeforeMin* and *AfterMin*, which are lists with the elements that precede and succeed *Min*.
+
+The second use,
+
+    append(BeforeMin, AfterMin, RestUnsorted)
+
+says that *RestUnsorted* is the list formed by concatenating *BeforeMin* and *AfterMin*. We use *RestUnsorted* to define *RestSorted*:
+
+    sorted(RestSorted, RestUnsorted)
+
+This is a recursive application of the **sorted** rule, which here says that *RestSorted* is the elements in *RestUnsorted* in sorted order.
+
+Example use:
 
 <pre>
-26> <b>[N * 2 || N <- List].</b>
-[2,4,6,8,10,12,14,16]
+| ?- <b>sorted(What, [11, 86, 2, 69, 22, 39, 85, 57, 78, 76]).</b>
+
+What = [2,11,22,39,57,69,76,78,85,86] ? 
+
+yes
 </pre>
 
-Read this as "select elements *N* from *List*, and generate a new list by adding elements of the form *N*\*2".
+Is this an algorithm?
+---------------------
 
-Example: get all elements greater than 4:
+In a declarative language, it becomes difficult to say what algorithm is used to compute a result. In our definition of the **sorted** rule, the definition resembles a selection sort, where we building a sorted result by repeatedly selecting the minimum element.
+
+A difficulty with declarative programming is because the programmer does not directly specify an algorithm, it is difficult to reason about the efficiency with which the computation will be carried out.
+
+Merge Sort
+==========
+
+Here is merge sort in Prolog.
+
+Recall that merge sort is a recursive sorting algorithm based on *merging* sorted lists to produce a single sorted list that contains all of the elements from the two input lists.
+
+Here is how we can define the merge operation in Prolog. First, the base cases:
+
+    merge(List, List, []).
+    merge(List, [], List).
+
+These rules state that the result of merging any sorted list with the empty list produces that list.
+
+A pair of recursive rules define the more general case of merging two nonempty lists:
+
+    merge([MinList1|RestMerged], [MinList1|RestList1], [MinList2|RestList2]) :-
+      MinList1 =< MinList2,
+      merge(RestMerged,RestList1,[MinList2|RestList2]).
+    merge([MinList2|RestMerged], [MinList1|RestList1], [MinList2|RestList2]) :-
+      MinList2 =< MinList1,
+      merge(RestMerged,[MinList1|RestList1],RestList2).
+
+The first rule says that the if *MinList1*, the first element of the list [*MinList1* | *RestList1*] is smaller than *MinList2* (the first element of the list [*MinList2* | *RestList2* ]), then the result of merging the two lists is *MinList1*, followed by the result of merging the lists *RestList1* and [*FirstList2* | *RestList2*]. The second rule handles the symmetric case (where *MinList2* is less than *MinList1*).
+
+Testing the merge rule:
 
 <pre>
-27> <b>[N || N <- List, N > 4].</b>
-[5,6,7,8]
+| ?- <b>merge(What, [1, 3, 5, 6], [2, 4, 7]).</b>
+
+What = [1,2,3,4,5,6,7] ? 
 </pre>
 
-Here, we've specified an additional clause *N*\>4 to restrict which elements of *List* are used to generate the result list.
+Now that we have a merge operation, we can define the **mergeSort** rule. First, the two base cases:
 
-Example: double all elements greater than 4:
+    mergeSort([], []).
+    mergeSort([A], [A|[]]).
+
+These rules state that sorting a list with no elements or exactly one element produces the same list as a result.
+
+Next, the general (recursive) case:
+
+    mergeSort(Sorted, List) :-
+      length(List, N),
+      FirstLength is //(N, 2),
+      SecondLength is N - FirstLength,
+      length(FirstUnsorted, FirstLength),
+      length(SecondUnsorted, SecondLength),
+      append(FirstUnsorted, SecondUnsorted, List),
+      mergeSort(FirstSorted, FirstUnsorted),
+      mergeSort(SecondSorted, SecondUnsorted),
+      merge(Sorted, FirstSorted, SecondSorted).
+
+A few things to note here:
+
+-   The **length** predicate asserts that the length of the list called *List* is *N*
+-   The **//** operator does integer division
+-   *FirstLength* and *SecondLength* are the lengths required to split the overall *List* into two equal parts: the **length** predicate is used to assert that *FirstUnsorted* and *SecondUnsorted* are lists with those lengths
+-   **append(FirstUnsorted, SecondUnsorted, List)** asserts that *List* is the result of concatenating *FirstList* and *SecondList*
+-   The recursive applications of **mergeSort** assert that *FirstSorted* and *SecondSorted* are the results of sorting *FirstUnsorted* and *SecondUnsorted*, respectively
+-   The clause **merge(Sorted, FirstSorted, SecondSorted)** asserts that the overall result, *Sorted*, is the result of merging *FirstSorted* and *SecondUnsorted*
+
+Testing merge sort:
 
 <pre>
-28> <b>[N*2 || N <- List, N > 4].</b>
-[10,12,14,16]
+| ?- <b>mergeSort(What, [11, 86, 2, 69, 22, 39, 85, 57, 78, 76]).</b>
+
+What = [2,11,22,39,57,69,76,78,85,86] ? 
 </pre>
 
-In this example, we both selected and transformed the input list.
+Is this an algorithm?
+---------------------
+
+Again, with a declarative language, it's hard to say.
+
+It is worth noting that the definition of our rules is pretty close to how we might define merge sort in an imperative language.

@@ -21,36 +21,31 @@ This page lists the schedule for the course.  Note that there may be minor chang
 > Thurs, Oct 1st | **Exam 1** (open book, open notes)
 > Tues, Oct 6th | Chapter 7 (Clojure), [Lecture 10: Why Clojure?](lectures/lecture10.html)
 > Thurs, Oct 8th | [Lecture 11: Recursion and iteration in Clojure](lectures/lecture11.html)
-> Tues, Oct 13th |
-> Thurs, Oct 15th |
+> Tues, Oct 13th | [Lecture 12: Clojure data structures](lectures/lecture12.html)
+> Thurs, Oct 15th | [Lecture 13: Map, filter, reduce, and higher-order functions](lectures/lecture13.html)
 > Tues, Oct 20th | Fall break, no class
-> Thurs, Oct 22nd |
-> Tues, Oct 27th |
-> Thurs, Oct 29th |
-> Tues, Nov 3rd |
-> Thurs, Nov 5th |
-> Tues, Nov 10th |
-> Thurs, Nov 12th |
-> Tues, Nov 17th |
-> Thurs, Nov 19th |
-> Tues, Nov 24th |
+> Thurs, Oct 22nd | Chapter 4 (Prolog), [Lecture 14: Prolog](lectures/lecture14.html)
+> Tues, Oct 27th | [Lecture 15: More Prolog](lectures/lecture15.html)
+> Thurs, Oct 29th | Chapter 6 (Erlang), [Lecture 16: Erlang](lectures/lecture16.html)
+> Tues, Nov 3rd | [Lecture 17: More Erlang](lectures/lecture17.html)
+> Thurs, Nov 5th | [Lecture 18: Concurrency in Erlang](lectures/lecture18.html)
+> Tues, Nov 10th | Chapter 2 (Ruby), [Lecture 19: Ruby](lectures/lecture19.html)
+> Thurs, Nov 12th | [Lecture 20: Ruby Arrays, Hashes, Mixins](lectures/lecture20.html)
+> Tues, Nov 17th | [Lecture 21: Metaprogramming in Ruby](lectures/lecture21.html)
+> Thurs, Nov 19th | Exam review
+> Tues, Nov 24th | **Exam 2** (programming, open book, open notes)
 > Thurs, Nov 26th | Thanksgiving vacation, no class
-> Tues, Dec 1st |
-> Thurs, Dec 3rd |
-> Tues, Dec 8th |
-> Thurs, Dec 10th |
+> Tues, Dec 1st | Chapter 5 (Scala), Introduction to Scala
+> Thurs, Dec 3rd | More Scala
+> Tues, Dec 8th | Chapter 8 (Haskell), Introduction to Haskell
+> Thurs, Dec 10th | More Haskell
 > Tues, Dec 15th |
 
 <!--
-> Tues, Sep 30 | Chapter 7 (Clojure), [Lecture 10: Why Clojure?](lectures/lecture10.html)
-> Thurs, Oct 2 | 
-> Tues, Oct 7 | [Lecture 11: Recursion and iteration in Clojure](lectures/lecture11.html)
-> Tues, Oct 28 | Chapter 4 (Prolog), [Lecture 12: Prolog](lectures/lecture12.html)
-> Thurs, Oct 30 | [Lecture 13: More Prolog](lectures/lecture13.html)
-> Tues, Nov 4 | Chapter 6 (Erlang), [Lecture 14: Erlang](lectures/lecture14.html)
-> Thurs, Nov 6 | [Lecture 15: More Erlang](lectures/lecture15.html)
-> Tues, Nov 11 | [Lecture 16: Concurrency in Erlang](lectures/lecture16.html)
-> Thurs, Nov 13 | Chapter 2 (Ruby), [Lecture 17: Ruby](lectures/lecture17.html)
-> Tues, Nov 18 | [Lecture 18: Ruby Arrays, Hashes, Mixins](lectures/lecture18.html)
-> Thurs, Nov 20 | [Lecture 19: Metaprogramming in Ruby](lectures/lecture19.html)
+> Tues, Nov 4 | 
+> Thurs, Nov 6 | 
+> Tues, Nov 11 | 
+> Thurs, Nov 13 | 
+> Tues, Nov 18 | 
+> Thurs, Nov 20 | 
 -->
