@@ -6,24 +6,20 @@ title: "Lab 8: Clojure exercises II"
 Getting Started
 ===============
 
-Start the Clojure interpreter by running the
+Start a new Clojure project in Eclipse using **New &rarr; Project &rarr; Clojure &rarr; Clojure Project**.  Name the new project **lab8**.
 
-    lein repl
+Open the file **src/lab8/core.clj**.  Create your functions in this file.  When you are ready to test your functions, start a REPL by right-clicking in the editor and choosing **Clojure &rarr; Load file in REPL**.  When you modify your code, do the same thing to reload your definitions in the REPL.
 
-command from a terminal window.
-
-You can save your code in a file called **funcs.clj**. Load your code in the interpreter using the command:
-
-{% highlight clojure %}
-(load-file "funcs.clj")
-{% endhighlight %}
+If you would prefer to use Light Table, or edit your code in a text editor and run the Clojure REPL from the command line, feel free.
 
 Your Task
 =========
 
 There are 4 tasks.
 
-**(1)** Write a Clojure function called **last-element-of** which takes a non-empty list and returns the last element.
+### First task
+
+Write a Clojure function called **last-element-of** which takes a non-empty list and returns the last element.
 
 Hints:
 
@@ -34,11 +30,13 @@ Hints:
 Example:
 
 {% highlight clojure %}
-user=> (last-element-of '(a b c))
-c
+user=> (last-element-of '(:a :b :c))
+:c
 {% endhighlight %}
 
-**(2)** Write a Clojure function called **append-to-list**. It should take two parameters:
+### Second task
+
+Write a Clojure function called **append-to-list**. It should take two parameters:
 
 1.  a value
 2.  a list
@@ -52,22 +50,26 @@ The cons function, given a value and a list as arguments, returns a new list con
 Example:
 
 {% highlight clojure %}
-user=> (append-to-list 'd '(a b c))
-(a b c d)
+user=> (append-to-list :d '(:a :b :c))
+(:a :b :c :d)
 {% endhighlight %}
 
-**(3)** Write a function called **reverse-list** which reverses the elements of a list given as its parameter.
+### Third task
+
+Write a function called **reverse-list** which reverses the elements of a list given as its parameter.
 
 Hint: Use your **append-to-list** function.
 
 Example:
 
 {% highlight clojure %}
-user=> (reverse-list '(a b c d))
-(d c b a)
+user=> (reverse-list '(:a :b :c :d))
+(:d :c :b :a)
 {% endhighlight %}
 
-**(4)** Find out how long a list needs to be for your **reverse-list** function to fail because it requires a new activation record for each recursive call.
+### Fourth task
+
+Find out how long a list needs to be for your **reverse-list** function to fail because it requires a new activation record for each recursive call.
 
 You can use the following **make-int-list** function to generate a list with a specified number of elements:
 
