@@ -63,7 +63,7 @@ Have `sort-by-frequency` call `count-words`.
 
 Use the `seq` function to convert the map of strings to counts into a sequence.  Each member of the sequence will be a vector whose first element is a string (word) and whose second element is an integer (count).
 
-Sort the sequence of string/integer vectors.  Here is a comparator function that will probably be useful:
+Sort the sequence of string/integer vectors using the [sort](http://clojuredocs.org/clojure.core/sort) function.  Here is a comparator function that will probably be useful:
 
 {% highlight clojure %}
 (defn pair-gt [[lkey lval] [rkey rval]]
