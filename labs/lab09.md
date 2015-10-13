@@ -61,7 +61,7 @@ Here are some hints.
 
 Have `sort-by-frequency` call `count-words`.
 
-Use the `seq` function to convert the map of strings to counts into a sequence.  Each member of the sequence will be a vector whose first element is a string (word) and whose second element is an integer (count).
+Use the [seq](http://clojuredocs.org/clojure.core/seq) function to convert the map of strings to counts into a sequence.  Each member of the sequence will be a vector whose first element is a string (word) and whose second element is an integer (count).
 
 Sort the sequence of string/integer vectors using the [sort](http://clojuredocs.org/clojure.core/sort) function.  Here is a comparator function that will probably be useful:
 
@@ -74,6 +74,6 @@ Sort the sequence of string/integer vectors using the [sort](http://clojuredocs.
       valcmp)))
 {% endhighlight %}
 
-This is essentially a Clojure version of a Java comparator: it compares two key/value pairs.  The Clojure `compare` function (used to compare the keys and values in the two pairs being compared) is like Java's `compareTo` method, returning a negative value if the left value is less than the right, 0 if they are equal, and a positive value if the left value is greater than the right.
+This is essentially a Clojure version of a Java comparator: it compares two key/value pairs.  The Clojure [compare](http://clojuredocs.org/clojure.core/compare) function (used to compare the keys and values in the two pairs being compared) is like Java's `compareTo` method, returning a negative value if the left value is less than the right, 0 if they are equal, and a positive value if the left value is greater than the right.
 
-Once the key/value pairs are sorted, use the `map` or `mapv` functions to extract just the first element from each pair in the sorted sequence of pairs.
+Once the key/value pairs are sorted, use the [map](http://clojuredocs.org/clojure.core/map) or [mapv](http://clojuredocs.org/clojure.core/mapv) functions to extract just the first element from each pair in the sorted sequence of pairs.
