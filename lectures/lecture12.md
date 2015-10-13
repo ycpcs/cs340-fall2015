@@ -7,7 +7,7 @@ Clojure has an extremely powerful set of built-in functional data structures, al
 
 They are "functional" because they do not offer any operations that mutate an existing data structure.  Instead, the operations which "modify" the data structure create a new instance of the data structure, based on the original instance.
 
-# Common operations
+# Operations
 
 There are many operations supported by all of the built-in data structures. Some examples:
 
@@ -16,6 +16,8 @@ There are many operations supported by all of the built-in data structures. Some
 `count`: get the number of elements in a collection.
 
 `contains?`: check whether a collection contains a specified value.
+
+In general, Google and [clojuredocs.org](https://clojuredocs.org/) are your friends when you have questions about how to use the Clojure collection types.
 
 # Sequences
 
@@ -37,7 +39,6 @@ There is a literal syntax for sets:
 
 {% highlight clojure %}
 #{ :a, :b, :c }     ; this is a set with three elements
-o
 {% endhighlight %}
 
 Note that the commas are optional in the literal syntax.
@@ -63,3 +64,7 @@ As with sets, the commas are optional.
 The `assoc` function updates a map by changing or adding a key/value association.
 
 The `dissoc` function updates a map by removing a key/value association.
+
+The `contains?` function can be used to check to see whether a map has a particular key.
+
+The `get` function retrieves the value associated with a specified key.
