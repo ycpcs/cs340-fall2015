@@ -1,28 +1,34 @@
 ---
 layout: default
-title: "Lab 12: Clojure review"
+title: "Lab 10: Tail-recursive list merge in Erlang"
 ---
 
-# Getting started
+Getting Started
+===============
 
-Download [clojure-review.zip](clojure-review.zip).  It is an Eclipse project, so you can import it into Eclipse using **File&rarr;Import...&rarr;General&rarr;Existing projects into workspace&rarr;Archive file**.  You should see a project called **clojure-review** in your Eclipse workspace.
+Download [sort.erl](../lectures/sort.erl).
 
-# Your task
+Start **erl** (Erlang interpreter) in the directory where you downloaded **sort.erl**. You can compile the code with the command
 
-Complete the **make-pair**, **double-apply**, **double-applicator**, **my-flatten**, and **conj-all** functions in `src/clojure_review/core.clj`.  Each function is described by a detailed comment with example inputs and expected results.
+{% highlight erlang %}
+c(sort).
+{% endhighlight %}
 
-You can test your functions by running the command `lein test` in a terminal window from the root of the project.
+You can test your **mergesort** function with the command
 
-You can also start a Clojure REPL (in Eclipse) by right-clicking in `core.clj` and choosing **Clojure&rarr;Load file in REPL**.  This is very useful for testing your functions interactively.
+{% highlight erlang %}
+sort:mergesort([11, 86, 2, 69, 22, 39, 85, 57, 78, 76]).
+{% endhighlight %}
 
-<div class="callout"><b>Important</b>: make sure you follow the requirements for each function.  For example, <b>my-flatten</b> must be recursive, and <b>conj-all</b> must be tail recursive.  Trivial solutions (e.g., <code>(defn my-flatten [a-seq] (flatten a-seq))</code> are not acceptable.</div>
+Your Task
+=========
 
-## Resources you may use
+Reimplement the **merge** function, which merges two sorted lists, using *tail recursion*.
 
-You may use your textbook, the [course website](http://ycpcs.github.io/cs340-fall2014), the [Clojure MOOC](http://mooc.cs.helsinki.fi/clojure) website, the [clojure.org](http://clojure.org/) website, and the [clojuredocs.org](http://clojuredocs.org/) website.
+You will need to define a tail-recursive helper function with an accumulator parameter. For example, let's assume that your helper function will be called **mergehelp**. You could define your **merge** function this way:
 
-Note that this lab is not graded, but it is intended to be a preview of Exam 2, so you should try to complete it using only the resources listed above (which you will also have access to for Exam 2.)
+{% highlight erlang %}
+merge(Left, Right) -> mergehelp(Left, Right, []).
+{% endhighlight %}
 
-# Solutions
-
-Here are my solutions: [lab12.clj](lab12.clj).
+Because tail-recursive list processing builds a list starting with the *last* element, you will need to reverse the result of the merge before returning the completed result. You can use the built-in **lists:reverse** function to do this.
