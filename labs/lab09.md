@@ -67,8 +67,8 @@ Sort the sequence of string/integer vectors using the [sort](http://clojuredocs.
 
 {% highlight clojure %}
 (defn pair-gt [[lkey lval] [rkey rval]]
-  (let [valcmp (compare rval lval)
-        keycmp (compare lkey rkey)]
+  (let [valcmp (compare rval lval)  ; a higher count should compare as "earlier"
+        keycmp (compare lkey rkey)] ; use the usual sort order for keys (tiebreaker)
     (if (= valcmp 0)
       keycmp
       valcmp)))
