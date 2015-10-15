@@ -35,8 +35,8 @@ Example call:
 Hints/requirements:
 
 * Use the `complement` and `make-is-multiple-of` functions to create a predicate that returns true when a number is *not* a multiple of a given integer: e.g., `(complement (make-is-multiple-of 3))` would return a predicate function that is true for all integers that *aren't* multiples of 3
-* You could also use the [remove](https://clojuredocs.org/clojure.core/remove) function rather than `filter` and `complement` to remove all of the multiples of the first element
 * Use `filter` with your predicate function to remove all of the multiples of whatever the first element of the input sequnce is
+* You could also use the [remove](https://clojuredocs.org/clojure.core/remove) function rather than `filter` and `complement` to remove all of the multiples of the first element
 
 ## find-primes
 
