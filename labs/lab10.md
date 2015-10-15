@@ -56,4 +56,4 @@ Hints/specifications:
 * Use `(Math/sqrt n)` to find the square root of `n`
 * You can use the `concat` function to concatenate two sequences (necessary at the end to combine the contents of the accumulator with the remaining integers)
 
-I feel like there should be a clever way to do this computation using `reduce` (rather than doing an explicit tail recursion using `loop`), although I'm not sure.
+Initially I felt that there should be an elegant way to do this computation using `reduce`, although having thought about it a bit, I don't think there is.  (However, I would be very happy to be proven wrong!)
