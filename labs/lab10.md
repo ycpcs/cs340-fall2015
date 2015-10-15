@@ -38,11 +38,11 @@ Hints/requirements:
 * You could also use the [remove](https://clojuredocs.org/clojure.core/remove) function rather than `filter` and `complement` to remove all of the multiples of the first element
 * Use `filter` with your predicate function to remove all of the multiples of whatever the first element of the input sequnce is
 
-## sieve
+## find-primes
 
-Write a function called `sieve` that computes a sequence containing all of the prime numbers up to a specified maximum integer.  Example call:
+Write a function called `find-primes` that computes a sequence containing all of the prime numbers up to a specified maximum integer.  Example call:
 
-    => (sieve 40)
+    => (find-primes 40)
     (2 3 5 7 11 13 17 19 23 29 31 37)
 
 The basic idea is that you can use the `apply-sieve` function repeatedly to discover all of the prime numbers: if applied repeatedly starting with a list whose first element is a prime number, it is guaranteed to return a list whose first element is the next prime number.  You can continue applying it until the first element is greater than or equal to the square root of the maximum integer.
