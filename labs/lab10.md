@@ -54,6 +54,6 @@ Hints/specifications:
 * Use `(range 2 max)` to generate a sequence of integers from 2 to `max` inclusive (2 is the first prime number)
 * Use `loop` to perform a tail recursive computation: the loop variables should be a sequence of integers starting with a prime number and an accumulator storing the prime numbers that have been discovered so far (initially empty)
 * Use `(Math/sqrt n)` to find the square root of `n`
-* You can use the `concat` function to concatenate two sequences
+* You can use the `concat` function to concatenate two sequences (necessary at the end to combine the contents of the accumulator with the remaining integers)
 
 I feel like there should be a clever way to do this computation using `reduce` (rather than doing an explicit tail recursion using `loop`), although I'm not sure.
