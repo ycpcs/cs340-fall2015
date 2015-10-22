@@ -20,6 +20,7 @@ This is the website for CS 340, Fall 2015 at York College.  All information abou
 
 ## News
 
+* **Oct 22** &mdash; [Assignment 5](assign/assign05.html) is due Thursday, Oct 29th by 11:59 PM.
 * **Oct 8** &mdash; The [Schedule](schedule.html) has been updated with topics and readings for the rest of the semester.
 * **Sep 24** &mdash; [Assignment 4](assign/assign04.html) has been posted (see description for milestones.)  Also, the [Schedule](schedule.html) has been updated with reading assignments.
 * **Sep 22** &mdash; Exam 1 will take place in class on Thursday, Oct 1st.  It will be open book and open notes.  A practice exam is available on the [Practice Exams](practice/index.html) page.

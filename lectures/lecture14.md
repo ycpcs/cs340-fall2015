@@ -20,11 +20,13 @@ Atoms
 
 Symbols:
 
-    homer
-    marge
-    bart
-    lisa
-    maggie
+{% highlight prolog %}
+homer
+marge
+bart
+lisa
+maggie
+{% endhighlight %}
 
 Note: names of symbols *must* be written in lower-case letters.
 
@@ -72,16 +74,18 @@ Relations can thus be formed as a collection of explicit facts, called *ground t
 
 Here are some ground truths:
 
-    father(homer, bart).
-    father(homer, lisa).
-    father(homer, maggie).
-    father(grandpa, homer).
-    father(grandpa, herb).
+{% highlight prolog %}
+father(homer, bart).
+father(homer, lisa).
+father(homer, maggie).
+father(grandpa, homer).
+father(grandpa, herb).
 
-    mother(marge, bart).
-    mother(marge, lisa).
-    mother(marge, maggie).
-    mother(grandma, homer).
+mother(marge, bart).
+mother(marge, lisa).
+mother(marge, maggie).
+mother(grandma, homer).
+{% endhighlight %}
 
 Inference rules
 ===============
@@ -96,27 +100,35 @@ Facts and inference rules may use *variables*. A variable is a name, in upper-ca
 
 Example: X is Y's paternal grandfather if there exists Z such that X is Z's father, and Z is Y's father:
 
-    paternal_grandfather(X, Y) :- father(X, Z), father(Z, Y).
+{% highlight prolog %}
+paternal_grandfather(X, Y) :- father(X, Z), father(Z, Y).
+{% endhighlight %}
 
 Note that X, Y, and Z are all variables, and the comma means "and" in the sense of a logical conjunction.
 
 We can describe a paternal grandmother in a similar way:
 
-    paternal_grandmother(X, Y) :- mother(X, Z), father(Z, Y).
+{% highlight prolog %}
+paternal_grandmother(X, Y) :- mother(X, Z), father(Z, Y).
+{% endhighlight %}
 
 Here is a possible set of inference rules:
 
-    samefather(X, Y) :- father(Q, X), father(Q, Y).
-    samemother(X, Y) :- mother(Q, X), mother(Q, Y).
+{% highlight prolog %}
+samefather(X, Y) :- father(Q, X), father(Q, Y).
+samemother(X, Y) :- mother(Q, X), mother(Q, Y).
 
-    siblings(X,Y) :- (samemother(X,Y); samefather(X,Y)), X \= Y.
+siblings(X,Y) :- (samemother(X,Y); samefather(X,Y)), X \= Y.
 
-    paternal_grandfather(X, Y) :- father(X, Q), father(Q, Y).
-    paternal_grandmother(X, Y) :- mother(X, Z), father(Z, Y).
+paternal_grandfather(X, Y) :- father(X, Q), father(Q, Y).
+paternal_grandmother(X, Y) :- mother(X, Z), father(Z, Y).
+{% endhighlight %}
 
 Note the definition of the inference rule defining the **siblings** relation:
 
-    siblings(X,Y) :- (samemother(X,Y); samefather(X,Y)), X \= Y.
+{% highlight prolog %}
+siblings(X,Y) :- (samemother(X,Y); samefather(X,Y)), X \= Y.
+{% endhighlight %}
 
 The semicolon means "or" in the sense of logical disjunction. That is because two people are siblings if *either* they share the same father or mother.  Also, the **\\=** operator means "not equals", preventing any person from being considered to be his or her own sibling.  (Prolog allows the same value to be bound to multiple variables.)
 
@@ -127,55 +139,77 @@ We can type in a potential fact, and based on the ground truths and the availabl
 
 Example:
 
-    father(homer, bart).
+{% highlight prolog %}
+father(homer, bart).
+{% endhighlight %}
 
 This query is true because a ground truth matching the query exists.
 
 The query
 
-    father(marge, bart).
+{% highlight prolog %}
+father(marge, bart).
+{% endhighlight %}
 
 is false because this fact cannot be derived using the available ground truths and inference rules.
 
 In general, answering a query requires constructing a chain of inferences. For example, the query
 
-    siblings(bart, lisa).
+{% highlight prolog %}
+siblings(bart, lisa).
+{% endhighlight %}
 
 is true because the facts
 
-    mother(marge, bart).
-    mother(marge, lisa).
+{% highlight prolog %}
+mother(marge, bart).
+mother(marge, lisa).
+{% endhighlight %}
 
 are ground truths, enabling the query
 
-    samemother(bart, lisa).
+{% highlight prolog %}
+samemother(bart, lisa).
+{% endhighlight %}
 
 to be true if **marge** is substituted for the variable **Q** in the rule defining the **samemother** relation. This, in turn, is sufficient to deduce that
 
-    siblings(bart, lisa).
+{% highlight prolog %}
+siblings(bart, lisa).
+{% endhighlight %}
 
 is true.
 
 A more interesting query
 
-    siblings(homer, herb).
+{% highlight prolog %}
+siblings(homer, herb).
+{% endhighlight %}
 
 is true because
 
-    father(grandpa, homer).
-    father(grandpa, herb).
+{% highlight prolog %}
+father(grandpa, homer).
+father(grandpa, herb).
+{% endhighlight %}
 
 implies
 
-    samefather(homer, herb).
+{% highlight prolog %}
+samefather(homer, herb).
+{% endhighlight %}
 
 which is sufficient to deduce that
 
-    siblings(homer, herb).
+{% highlight prolog %}
+siblings(homer, herb).
+{% endhighlight %}
 
 is true. Note that the query
 
-    samemother(homer, herb).
+{% highlight prolog %}
+samemother(homer, herb).
+{% endhighlight %}
 
 is false, because there is no derivation for this fact.
 
@@ -186,7 +220,9 @@ The real power of Prolog can be seen when a query contains one or more variables
 
 For example, the query:
 
-    paternal_grandfather(X, bart).
+{% highlight prolog %}
+paternal_grandfather(X, bart).
+{% endhighlight %}
 
 yields the answer
 
@@ -198,7 +234,9 @@ showing that **grandpa** can be substituted for the variable **X** in order to m
 
 Note that a query with variables could lead to multiple solutions.  For example, the query
 
-    siblings(X, bart).
+{% highlight prolog %}
+siblings(X, bart).
+{% endhighlight %}
 
 yields two solutions, one where **lisa** is substituted for **X**, and one where **maggie** is substituted for **X**.
 
