@@ -245,7 +245,7 @@ Next, the general (recursive) case:
 {% highlight prolog %}
 mergeSort(Sorted, List) :-
   length(List, N),
-  FirstLength is //(N, 2),
+  FirstLength is div(N, 2),
   SecondLength is N - FirstLength,
   length(FirstUnsorted, FirstLength),
   length(SecondUnsorted, SecondLength),
@@ -258,7 +258,7 @@ mergeSort(Sorted, List) :-
 A few things to note here:
 
 -   The **length** predicate asserts that the length of the list called *List* is *N*
--   The **//** operator does integer division
+-   The **div** function does integer division
 -   *FirstLength* and *SecondLength* are the lengths required to split the overall *List* into two equal parts: the **length** predicate is used to assert that *FirstUnsorted* and *SecondUnsorted* are lists with those lengths
 -   **append(FirstUnsorted, SecondUnsorted, List)** asserts that *List* is the result of concatenating *FirstList* and *SecondList*
 -   The recursive applications of **mergeSort** assert that *FirstSorted* and *SecondSorted* are the results of sorting *FirstUnsorted* and *SecondUnsorted*, respectively
