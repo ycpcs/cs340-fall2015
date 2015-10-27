@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "MiniVM programming"
+title: "Lab 11: MiniVM programming"
 ---
 
 # Getting started
 
-Download [CS340\_Lab09.zip](CS340_Lab09.zip).  Unzip it somewhere (e.g., in your `CS340` directory).  The lab files are in a directory called `CS340_Lab09`.
+Download [CS340\_Lab11.zip](CS340_Lab11.zip).  Unzip it somewhere (e.g., in your `CS340` directory).  The lab files are in a directory called `CS340_Lab11`.
 
 # MiniVM
 
