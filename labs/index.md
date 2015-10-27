@@ -19,7 +19,7 @@ Labs are not graded, and you do not need to submit them.  However, they are very
 > Tues, Oct 6 | [Lab 8: Clojure Exercises II](lab08.html) | n/a
 > Tues, Oct 13 | [Lab 9: Clojure data structures](lab09.html) | n/a
 > Thurs, Oct 15 | [Lab 10: Sieve of Eratosthenes](lab10.html) | n/a
-> Tues, Oct 27 | [Lab 11: MiniVM programming](lab09.html) | [CS340\_Lab11.zip](CS340_Lab11.zip)
+> Tues, Oct 27 | [Lab 11: MiniVM programming](lab11.html) | [CS340\_Lab11.zip](CS340_Lab11.zip)
 
 <!--
 > Tues, Nov 4 | [Lab 10: Tail-recursive list merge in Erlang](lab10.html) | [sort.erl](../lectures/sort.erl)
