@@ -8,10 +8,12 @@ Recursion
 
 Prolog inference rules can be recursive. For example:
 
-    ancestor(X, Y) :- father(X, Y).
-    ancestor(X, Y) :- mother(X, Y).
-    ancestor(X, Y) :- father(X, Z), ancestor(Z, Y).
-    ancestor(X, Y) :- mother(X, Z), ancestor(Z, Y).
+{% highlight prolog %}
+ancestor(X, Y) :- father(X, Y).
+ancestor(X, Y) :- mother(X, Y).
+ancestor(X, Y) :- father(X, Z), ancestor(Z, Y).
+ancestor(X, Y) :- mother(X, Z), ancestor(Z, Y).
+{% endhighlight %}
 
 These rules establish that *X* is *Y*'s ancestor if
 
@@ -59,11 +61,15 @@ A tuple is a sequence with a fixed number of values. A list is a sequence with a
 
 A tuple:
 
-    (a, b, c)
+{% highlight prolog %}
+(a, b, c)
+{% endhighlight %}
 
 A list:
 
-    [a, b, c]
+{% highlight prolog %}
+[a, b, c]
+{% endhighlight %}
 
 Lists have an alternate syntax:
 
@@ -77,10 +83,12 @@ As an example: finding the smallest number in a list of numbers.
 
 First, we can define a **min** rule which, for a pair of numbers, specifies which is the minimum:
 
-    min(A, A, B) :- A =< B.
-    min(B, A, B) :- B =< A.
+{% highlight prolog %}
+min(A, A, B) :- A =< B.
+min(B, A, B) :- B =< A.
+{% endhighlight %}
 
-Read the first rule as "A is the minimum of A and B if A \<= B".
+Read the first rule as "A is the minimum of A and B if A &lt;= B".
 
 Examples:
 
@@ -99,8 +107,10 @@ yes
 
 We can define two rules for finding the smallest number in a list of numbers:
 
-    smallest(A, [A|[]]).
-    smallest(Min, [A|B]) :- smallest(SB, B), min(Min, A, SB).
+{% highlight prolog %}
+smallest(A, [A|[]]).
+smallest(Min, [A|B]) :- smallest(SB, B), min(Min, A, SB).
+{% endhighlight %}
 
 The first rule specifies that in a list where *A* is the only element, it is the smallest element. This serves as a base case.
 
@@ -123,35 +133,47 @@ Now that we've defined how to find the smallest item in a list, we define how to
 
 The base case is that sorting a list with no elements is the empty list:
 
-    sorted([], []).
+{% highlight prolog %}
+sorted([], []).
+{% endhighlight %}
 
 The recursive case defines what it means to sort a list with at least one element:
 
-    sorted([Min|RestSorted], List) :-
-      smallest(Min, List),
-      append(BeforeMin, [Min|AfterMin], List),
-      append(BeforeMin, AfterMin, RestUnsorted),
-      sorted(RestSorted, RestUnsorted).
+{% highlight prolog %}
+sorted([Min|RestSorted], List) :-
+  smallest(Min, List),
+  append(BeforeMin, [Min|AfterMin], List),
+  append(BeforeMin, AfterMin, RestUnsorted),
+  sorted(RestSorted, RestUnsorted).
+{% endhighlight %}
 
 This rule states that the sorted form of a list is a list containing at least one element is the list where the first element is the minimum value in the original list, and the subsequent values are the rest of the elements in the original list in sorted order.
 
 To extract the minimum element from the list, we use the built-in **append** rule. The assertion
 
-    append(A, B, C)
+{% highlight prolog %}
+append(A, B, C)
+{% endhighlight %}
 
 says that *C* is the result of concatenating the lists *A* and *B*. We use this rule twice. The first use,
 
-    append(BeforeMin, [Min|AfterMin], List)
+{% highlight prolog %}
+append(BeforeMin, [Min|AfterMin], List)
+{% endhighlight %}
 
 states that *List* is the result of concatenating two lists. The first list is *BeforeMin*. The second list has *Min* (the minimum element of the overall list) as its first element, and *AfterMin* as the remaining elements. This effectively gives us lists *BeforeMin* and *AfterMin*, which are lists with the elements that precede and succeed *Min*.
 
 The second use,
 
-    append(BeforeMin, AfterMin, RestUnsorted)
+{% highlight prolog %}
+append(BeforeMin, AfterMin, RestUnsorted)
+{% endhighlight %}
 
 says that *RestUnsorted* is the list formed by concatenating *BeforeMin* and *AfterMin*. We use *RestUnsorted* to define *RestSorted*:
 
-    sorted(RestSorted, RestUnsorted)
+{% highlight prolog %}
+sorted(RestSorted, RestUnsorted)
+{% endhighlight %}
 
 This is a recursive application of the **sorted** rule, which here says that *RestSorted* is the elements in *RestUnsorted* in sorted order.
 
@@ -181,19 +203,23 @@ Recall that merge sort is a recursive sorting algorithm based on *merging* sorte
 
 Here is how we can define the merge operation in Prolog. First, the base cases:
 
-    merge(List, List, []).
-    merge(List, [], List).
+{% highlight prolog %}
+merge(List, List, []).
+merge(List, [], List).
+{% endhighlight %}
 
 These rules state that the result of merging any sorted list with the empty list produces that list.
 
 A pair of recursive rules define the more general case of merging two nonempty lists:
 
-    merge([MinList1|RestMerged], [MinList1|RestList1], [MinList2|RestList2]) :-
-      MinList1 =< MinList2,
-      merge(RestMerged,RestList1,[MinList2|RestList2]).
-    merge([MinList2|RestMerged], [MinList1|RestList1], [MinList2|RestList2]) :-
-      MinList2 =< MinList1,
-      merge(RestMerged,[MinList1|RestList1],RestList2).
+{% highlight prolog %}
+merge([MinList1|RestMerged], [MinList1|RestList1], [MinList2|RestList2]) :-
+  MinList1 =< MinList2,
+  merge(RestMerged,RestList1,[MinList2|RestList2]).
+merge([MinList2|RestMerged], [MinList1|RestList1], [MinList2|RestList2]) :-
+  MinList2 =< MinList1,
+  merge(RestMerged,[MinList1|RestList1],RestList2).
+{% endhighlight %}
 
 The first rule says that the if *MinList1*, the first element of the list [*MinList1* | *RestList1*] is smaller than *MinList2* (the first element of the list [*MinList2* | *RestList2* ]), then the result of merging the two lists is *MinList1*, followed by the result of merging the lists *RestList1* and [*FirstList2* | *RestList2*]. The second rule handles the symmetric case (where *MinList2* is less than *MinList1*).
 
@@ -207,23 +233,27 @@ What = [1,2,3,4,5,6,7] ?
 
 Now that we have a merge operation, we can define the **mergeSort** rule. First, the two base cases:
 
-    mergeSort([], []).
-    mergeSort([A], [A|[]]).
+{% highlight prolog %}
+mergeSort([], []).
+mergeSort([A], [A|[]]).
+{% endhighlight %}
 
 These rules state that sorting a list with no elements or exactly one element produces the same list as a result.
 
 Next, the general (recursive) case:
 
-    mergeSort(Sorted, List) :-
-      length(List, N),
-      FirstLength is //(N, 2),
-      SecondLength is N - FirstLength,
-      length(FirstUnsorted, FirstLength),
-      length(SecondUnsorted, SecondLength),
-      append(FirstUnsorted, SecondUnsorted, List),
-      mergeSort(FirstSorted, FirstUnsorted),
-      mergeSort(SecondSorted, SecondUnsorted),
-      merge(Sorted, FirstSorted, SecondSorted).
+{% highlight prolog %}
+mergeSort(Sorted, List) :-
+  length(List, N),
+  FirstLength is //(N, 2),
+  SecondLength is N - FirstLength,
+  length(FirstUnsorted, FirstLength),
+  length(SecondUnsorted, SecondLength),
+  append(FirstUnsorted, SecondUnsorted, List),
+  mergeSort(FirstSorted, FirstUnsorted),
+  mergeSort(SecondSorted, SecondUnsorted),
+  merge(Sorted, FirstSorted, SecondSorted).
+{% endhighlight %}
 
 A few things to note here:
 
