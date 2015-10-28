@@ -34,3 +34,7 @@ Interactive execution is useful for understanding the exact behavior of the prog
 ## If you have time
 
 Try modifying the program to use a procedure to compute the sum of 1..N.
+
+# Solution
+
+[sumints.mvm](sumints.mvm), [sumints\_proc.mvm](sumints_proc.mvm) (version using a procedure)
