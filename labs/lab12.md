@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Lab 10: Tail-recursive list merge in Erlang"
+title: "Lab 12: Tail-recursive list merge in Erlang"
 ---
 
 Getting Started
