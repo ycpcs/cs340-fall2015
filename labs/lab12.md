@@ -32,3 +32,7 @@ merge(Left, Right) -> mergehelp(Left, Right, []).
 {% endhighlight %}
 
 Because tail-recursive list processing builds a list starting with the *last* element, you will need to reverse the result of the merge before returning the completed result. You can use the built-in **lists:reverse** function to do this.
+
+# Solution
+
+Here is a solution: [Lab 12 solution](lab12soln.html)
