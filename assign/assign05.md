@@ -179,6 +179,10 @@ Prolog will infer that **What** is **f**.
 
 The key will be finding a way to evaluate two boolean operators for three input values. Suggestion: define a predicate of the following form:
 
+<pre>
+composeTwo(X, Y, A, B, C, Z) :-  <i>something</i>.
+</pre>
+
 This predicate asserts that boolean operators *X* and *Y*, when evaluated on the expression
 
 > *A* *X* (*B* *Y* *C*)
