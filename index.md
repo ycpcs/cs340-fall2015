@@ -20,6 +20,7 @@ This is the website for CS 340, Fall 2015 at York College.  All information abou
 
 ## News
 
+* **Oct 29** &mdash; [Assignment 6](assign/assign06.html) is due Friday, Nov 6th by 11:59 PM.
 * **Oct 22** &mdash; [Assignment 5](assign/assign05.html) is due Thursday, Oct 29th by 11:59 PM.
 * **Oct 8** &mdash; The [Schedule](schedule.html) has been updated with topics and readings for the rest of the semester.
 * **Sep 24** &mdash; [Assignment 4](assign/assign04.html) has been posted (see description for milestones.)  Also, the [Schedule](schedule.html) has been updated with reading assignments.

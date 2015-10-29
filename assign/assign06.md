@@ -3,13 +3,11 @@ layout: default
 title: "Assignment 6: Parsing, Part 1"
 ---
 
-**Due**: Thursday, Oct 30th by 11:59 PM
-
-*Updated* 10/30: Fixed expected parse trees.
+**Due**: Friday, Nov 6th by 11:59 PM
 
 # Getting Started
 
-Download [CS340\_Assign05.zip](CS340_Assign05.zip).
+Download [CS340\_Assign06.zip](CS340_Assign06.zip).
 
 If you are using Counterclockwise under Eclipse, you can import the zipfile as an Eclipse project.
 
@@ -310,14 +308,14 @@ When you are done, submit the lab to the Marmoset server using either of the met
 From Eclipse
 ------------
 
-If you have the [Simple Marmoset Uploader Plugin](http://ycpcs.github.io/cs201-fall2014/resources/index.html) installed, select the project (**CS340\_Assign05**) in the package explorer and then press the blue up arrow button in the toolbar. Enter your Marmoset username and password when prompted.
+If you have the [Simple Marmoset Uploader Plugin](http://ycpcs.github.io/cs201-fall2014/resources/index.html) installed, select the project (**CS340\_Assign06**) in the package explorer and then press the blue up arrow button in the toolbar. Enter your Marmoset username and password when prompted.
 
 From a web browser
 ------------------
 
 Create a zip file containing your completed project.  (If you are in Eclipse, you can use **File &rarr; Export... &rarr; General &rarr; Archive File**.)
 
-Upload the saved zip file to the Marmoset server as **assign05**. The server URL is
+Upload the saved zip file to the Marmoset server as **assign06**. The server URL is
 
 > [https://cs.ycp.edu/marmoset/](https://cs.ycp.edu/marmoset/)
 
