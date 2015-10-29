@@ -39,7 +39,7 @@ The built-in data types in Erlang are similar to those supported by Prolog. They
 Tuples
 ------
 
-The tuple data type in Erlang has no direct equivalent in Prolog. A tuple is a fixed-length series of values. Arbitrary record data structures can be created using tuples.
+A tuple is a fixed-length series of values. Arbitrary record data structures can be created using tuples.
 
 An important convention in Erlang is to use a symbol as the first member of a tuple as a tag to indicate the type of data the tuple contains.
 
