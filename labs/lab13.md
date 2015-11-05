@@ -1,160 +1,30 @@
 ---
 layout: default
-title: "Lab 11: Introduction to Ruby"
+title: "Lab 13: Clojure review"
 ---
 
-Getting Started
-===============
+# Getting started
 
-Download [CS340\_Lab11.zip](CS340_Lab11.zip) and unzip it.
+Download [clojure-review.zip](clojure-review.zip).  It is an Eclipse project, so you can import it into Eclipse using **File&rarr;Import...&rarr;General&rarr;Existing projects into workspace&rarr;Archive file**.  You should see a project called **clojure-review** in your Eclipse workspace.
 
-You will modify the program **sched.rb**.
+# Your task
 
-To run the program, start a terminal, change to the directory containing **sched.rb**, and run the command
+This is a Clojure review lab.  It is intended to prepare you for Exam 2, so I would recommend taking it in "exam conditions".  We will work on this lab in class on Tuesday, Nov 10th.
 
-    ruby sched.rb
+Complete the **make-pair**, **double-apply**, **double-applicator**, **my-flatten**, and **conj-all** functions in `src/clojure_review/core.clj`.  Each function is described by a detailed comment with example inputs and expected results.
 
-Course Scheduling
-=================
+You can test your functions by running the command `lein test` in a terminal window from the root of the project.
 
-Your task is to write a Ruby program that reads information about courses and their prerequisites, and prints information about the courses.
+You can also start a Clojure REPL (in Eclipse) by right-clicking in `core.clj` and choosing **Clojure&rarr;Load file in REPL**.  This is very useful for testing your functions interactively.
 
-The course information is in a file called **courses.txt**. Each line represents one course. Here is an example of one line:
+<div class="callout"><b>Important</b>: make sure you follow the requirements for each function.  For example, <b>my-flatten</b> must be recursive, and <b>conj-all</b> must be tail recursive.  Trivial solutions (e.g., <code>(defn my-flatten [a-seq] (flatten a-seq))</code> are not acceptable.</div>
 
-    1340,CS 340 - Programming Language Design,1201
+## Resources you may use
 
-Each line lists a course number, course name, and (optionally) the course number of its immediate prerequisite. (Course numbers are simply unique integer identifiers.) The line above lists the information about CS 340, indicating that its unique course number is 1340, and that it depends on a course whose course number is 1201 (which happens to be CS 201.)
+You may use your textbook, the [course website](http://ycpcs.github.io/cs340-fall2015), the [Clojure MOOC](http://mooc.fi/courses/2014/clojure/) website, the [clojure.org](http://clojure.org/) website, and the [clojuredocs.org](http://clojuredocs.org/) website.
 
-You should define a **Course** class to represent information about a single course. This class might look something like the following:
+Note that this lab is not graded, but it is intended to be a preview of Exam 2, so you should try to complete it using only the resources listed above (which you will also have access to for Exam 2.)
 
-{% highlight ruby %}
-class Course
-    attr_reader :num, :name, :direct_prereq
+# Solutions
 
-    def initialize(num, name, direct_prereq)
-        @num = num
-        @name = name
-        @direct_prereq = direct_prereq
-    end
-end
-{% endhighlight %}
-
-The use of **attr\_reader** automatically generates getter methods for the **@num**, **@name**, and **@direct\_prereq** fields. For example, if **c** is a reference to a **Course** object, then **c.num** would return the value of the **@num** field for that object.
-
-For example, a **Course** object could be created as
-
-{% highlight ruby %}
-cs101 = Course.new(1101, 'CS 101 - Introduction to Computer Science I', nil)
-{% endhighlight %}
-
-The idea is that the **@direct_prereq** field will be the course number of the direct prerequisite, or **nil** value if there is no direct prerequisite. In the example above, there is no direct prerequisite. Creating a **Course** object for a course with a direct prerequisite might look something like
-
-{% highlight ruby %}
-cs201 = Course.new(1201, 'CS 201 - Introduction to Computer Science II', 1101)
-{% endhighlight %}
-
-since **1101** is the course number for the **CS 101** course, which is the direct prerequisite for **CS 201**.
-
-First Task
-==========
-
-For the first task, your program should read the information in **courses.txt** and simply print it out, so that for each course, a course number, course name, and direct prerequisite is printed.
-
-Example output:
-
-<pre>
-Course number: 1100
-  Name: CS 100 - CPADS
-  Direct prerequisite: 0
-Course number: 1101
-  Name: CS 101 - Introduction To Computer Science I
-  Direct prerequisite: 0
-Course number: 1201
-  Name: CS 201 - Introduction To Computer Science II
-  Direct prerequisite: 1101
-<i>more output...</i>
-</pre>
-
-Hints
------
-
-Opening a file:
-
-{% highlight ruby %}
-f = File.new("courses.txt")
-{% endhighlight %}
-
-Iterating through the lines of the file:
-
-{% highlight ruby %}
-f.each_line do |line|
-    # line is a string containing one line of the file
-end
-{% endhighlight %}
-
-You can split a string **s** into an array of strings (in this case separated by commas) as follows:
-
-{% highlight ruby %}
-arr = s.split(',')
-{% endhighlight %}
-
-The **to\_i** method converts a string to an integer.
-
-Second Task (challenging!)
-==========================
-
-For the second task, your program should read **courses.txt** and then print a report of the transitive prerequisites of all courses.
-
-A course's transitive prerequisites is a set that contains
-
--   all of the course's immediate prerequisites
--   all of the transitive prerequisites of the course's immediate prerequisites
-
-For example, CS 340 has CS 201 as its immediate prerequisite, and CS 201 has CS 101 as its immediate prerequisite. So, the transitive prerequisites of CS 340 are CS 101 and CS 201.
-
-Here is what the output should look like:
-
-    ### Transitive prerequisites ###
-    CS 100 - CPADS: 
-    CS 101 - Introduction To Computer Science I: 
-    CS 201 - Introduction To Computer Science II: 1101
-    CS 320 - Software Engineering and Design: 1101, 1201
-    CS 330 - Network Applications and Protocols: 1101, 1201
-    CS 340 - Programming Language Design: 1101, 1201
-    CS 350 - Data Structures: 1101, 1201
-    CS 360 - Algorithms: 1101, 1201
-    CS 370 - Computer Graphics Programming I: 1101, 1201
-    CS 420 - Operating Systems: 2260, 1101, 1201
-    CS 481 - Senior Software Project I: 1320, 1101, 1201
-    ECE 260 - Fundamentals of Computer Engineering: 1101, 1201
-    MAT 171 - Calculus I: 
-    MAT 172 - Calculus II: 3171
-    MAT 235 - Discrete Mathematics: 3171, 3172
-
-Note that a course's transitive prerequisites do not need to be listed in any particular order.
-
-Hints
------
-
-Here is a possible algorithm for finding transitive prerequisites
-
-    done = false
-    while !done
-        done = true
-    
-        for each course c
-            for each of the course's prerequisites p
-                add p's prerequisites as prerequisites of c
-            end for
-    
-            if c's prerequisites changed
-                done = false
-            end if
-        end for
-    end while
-
-A hash mapping course numbers to **Course** objects will probably be useful.
-
-The Ruby **Set** class may be useful for keeping track of sets of prerequisites:
-
-> <http://www.ruby-doc.org/stdlib-1.9.3/libdoc/set/rdoc/Set.html>
+Here are my solutions: [lab13.clj](https://github.com/ycpcs/cs340-fall2015/blob/gh-pages/labs/lab13.clj)

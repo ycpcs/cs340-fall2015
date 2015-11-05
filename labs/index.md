@@ -16,14 +16,11 @@ Labs are not graded, and you do not need to submit them.  However, they are very
 > Thurs, Sep 17th | [Lab 5: Precedence Climbing](lab05.html) | [PrecedenceClimbingJava.zip](../lectures/PrecedenceClimbingJava.zip), [PrecedenceClimbingSoln.zip](../lectures/PrecedenceClimbingSoln.zip) (solution)
 > Tues, Sep 22nd | [Lab 6: Turing Machines](lab06.html) | n/a
 > Tues, Sep 29th | [Lab 7: Clojure Exercises I](lab07.html) | n/a
-> Tues, Oct 6 | [Lab 8: Clojure Exercises II](lab08.html) | n/a
-> Tues, Oct 13 | [Lab 9: Clojure data structures](lab09.html) | n/a
-> Thurs, Oct 15 | [Lab 10: Sieve of Eratosthenes](lab10.html) | n/a
-> Tues, Oct 27 | [Lab 11: MiniVM programming](lab11.html) | [CS340\_Lab11.zip](CS340_Lab11.zip)
-> Thurs, Oct 29 | [Lab 12: Tail-recursive list merge in Erlang](lab12.html) | [sort.erl](../lectures/sort.erl)
-
-<!--
-> Thurs, Nov 13 | [Lab 11: Introduction to Ruby](lab11.html) | [CS340\_Lab11.zip](CS340_Lab11.zip)
-> Tues, Nov 25 | [Lab 12: Clojure review](lab12.html) | [clojure-review.zip](clojure-review.zip)
-> Tues, Dec 2 | [Lab 13: Clojure review 2](lab13.html) | [clojure-review2.zip](clojure-review2.zip)
--->
+> Tues, Oct 6th | [Lab 8: Clojure Exercises II](lab08.html) | n/a
+> Tues, Oct 13th | [Lab 9: Clojure data structures](lab09.html) | n/a
+> Thurs, Oct 15th | [Lab 10: Sieve of Eratosthenes](lab10.html) | n/a
+> Tues, Oct 27th | [Lab 11: MiniVM programming](lab11.html) | [CS340\_Lab11.zip](CS340_Lab11.zip)
+> Thurs, Oct 29th | [Lab 12: Tail-recursive list merge in Erlang](lab12.html) | [sort.erl](../lectures/sort.erl)
+> Tues, Nov 10th | [Lab 13: Clojure review](lab13.html) | [clojure-review.zip](clojure-review.zip)
+> Thurs, Nov 12th | [Lab 14: Introduction to Ruby](lab14.html) | [CS340\_Lab14.zip](CS340_Lab14.zip)
+> Tues, Nov 17th | [Lab 15: Clojure review 2](lab15.html) | [clojure-review2.zip](clojure-review2.zip)

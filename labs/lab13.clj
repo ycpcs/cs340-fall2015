@@ -1,88 +1,100 @@
-(ns clojure-review2.core)
+(ns clojure-review.core)
 
-; Note: for functions returning sequences, it doesn't matter what
-; kind of sequence you return as long as the sequence contains
-; the correct values.
+; Note: for all functions that return sequences, it doesn't
+; really matter what kind of sequence you return, as long as
+; it contains the expected values.
 
-; This function takes two parameters: f (a function) and
-; y (a value).  It should return a function taking a
-; single parameter x, which applies f to the arguments x and y.
+; Complete the function so that it returns a vector containing two
+; copies of the parameter x.
 ;
 ; Examples:
-;   ((create-applicator + 2) 3) => 5
-;   ((create-applicator - 3) 9) => 6
-;   ((create-applicator conj :heythere) [:hey :hey]) => [:hey :hey :heythere]
+;   (make-pair 3) => [3 3]
+;   (make-pair [:howdy]) => [[:howdy] [:howdy]]
+;   (make-pair "Yum!") => ["Yum!" "Yum!"]
+;
+(defn make-pair [x]
+  [x x])
 
-(defn create-applicator [f y]
+; Complete the function so that it applies f to
+; the result of applying f to x.
+; In other word, it "double applies" the function f to x.
+;
+; Examples:
+;   (double-apply inc 2) => 4
+;   (double-apply first [[:a :b] :c [:d [:e]]]) => :a
+;   (double-apply rest [[:a :b] :c [:d [:e]]]) => ([:d [:e]])
+;
+(defn double-apply [f x]
+  (f (f x)))
+
+; Return a function which takes a function f, and returns a function
+; with a single parameter that returns the result of applying f to
+; the result of applying f to the returned function's parameter.
+; (I.e., return a function that double applies f to the
+; returned function's parameter.)
+;
+; Examples:
+;   ((double-applicator inc) 2) => 4
+;   ((double-applicator first) [[:a :b] :c [:d [:e]]]) => :a
+;   ((double-applicator rest) [[:a :b] :c [:d [:e]]]) => ([:d [:e]])
+;
+(defn double-applicator [f]
   (fn [x]
-    (f x y)))
+    (double-apply f x)))
 
-; This function takes three parameters: f (a function),
-; y (a value), and s (a sequence).  It should return
-; a sequence whose elements are formed from the elements
-; of the sequence by applying f to a list element and y.
+; Complete the function so that it takes a sequence of values
+; and returns a "flattened" sequence.  Specifically, for each
+; element in the sequence:
 ;
-; Requirement: use create-applicator and map.
+;   - if the element is not a sequence, make it part of the
+;     result sequence
+;   - if the element is a sequence, make all of the
+;     values resulting from flattening the element part of
+;     the result sequence
+;
+; The elements in the result sequence should be in the same
+; order as the order in which they occurred in the original
+; sequence.
+;
+; Requirement: use recursion with an explicit helper
+; function.  The helper function should have an accumulator parameter.
+;
+; Hint: you can use the sequential? function to check whether a
+; value is a sequence.
 ;
 ; Examples:
-;   (apply-to-sequence + 1 [1 2 3]) => [2 3 4]
-;   (apply-to-sequence * 4 [1 2 3 4]) => [4 8 12 16]
-;   (apply-to-sequence conj :bacon [[:eggs] [:avocado] [:scallops]])
-;      => [[:eggs :bacon] [:avocado :bacon] [:scallops :bacon]]
-;   (apply-to-sequence + 1 []) => []
-
-(defn apply-to-sequence [f y s]
-  (map (create-applicator f y) s))
-
-; This function takes three parameters: f (a function),
-; y (a value), and s (a sequence).  It should return
-; a sequence whose elements are formed from the elements
-; of the sequence by applying f to a list element and y.
+;    (my-flatten [:a [[[:b] :c]]]) => (:a :b :c)
+;    (my-flatten [:spam :spam :spam :spam :spam [:baked-beans [:spam] [[:spam]] [[[:spam]]]]])
+;       => (:spam :spam :spam :spam :spam :baked-beans :spam :spam :spam)
 ;
-; Requirement: don't use map or create-applicator.
-; Instead, use tail recursion, either using a helper function,
-; or using loop/recur.  The recursion should be on s (the
-; sequence).  Think about an appropriate base case.
+
+(defn my-flatten-work [a-seq acc]
+  (cond
+    (empty? a-seq) acc
+    (sequential? (first a-seq)) (let [aa (my-flatten-work (first a-seq) acc)]
+                                  (recur (rest a-seq) aa))
+    :else (recur (rest a-seq) (conj acc (first a-seq)))))
+
+(defn my-flatten [a-seq]
+  (my-flatten-work a-seq []))
+
+; Given a vector a-vec and a sequence a-seq, return a vector
+; containing all of the elements of a-vec followed by all of the
+; elements of a-seq.
+;
+; Requirements: your solution must be tail recursive, either with
+; a helper function or loop/recur.  Each iteration should use
+; conj to append one element of a-seq onto the current accumulator
+; value.
 ;
 ; Examples:
-;   (apply-to-sequence-the-hard-way + 1 [1 2 3]) => [2 3 4]
-;   (apply-to-sequence-the-hard-way * 4 [1 2 3 4]) => [4 8 12 16]
-;   (apply-to-sequence-the-hard-way conj :bacon [[:eggs] [:avocado] [:scallops]])
-;      => [[:eggs :bacon] [:avocado :bacon] [:scallops :bacon]]
-;   (apply-to-sequence-the-hard-way + 1 []) => []
-
-(defn apply-to-sequence-the-hard-way [f y s]
-  (loop [ss s
-         acc []]
-    (if (empty? ss)
-      acc
-      (recur (rest ss) (conj acc (f (first ss) y))))))
-
-; This function takes a sequence and returns a sequence in which
-; each pair of adjacent elements in the original sequence is swapped
-; (first and second, third and fourth, etc.)
+;    (conj-all [:a :b :c] [:d :e :f]) => [:a :b :c :d :e :f]
+;    (conj-all [] ["x" "y" "z"]) => ["x" "y" "z"]
+;    (conj-all ["baked" "beans"] []) => ["baked" "beans"]
 ;
-; As a special case, if the sequence contains an odd number of elements,
-; leave the last element as-is.
-;
-; You can implement this however you'd like.  A tail recursion using
-; a helper function or loop/recur isn't a bad approach.  Think carefully
-; about an appropriate base case or base cases.
-;
-; Hint: the "first" function gets the first element of a sequence,
-; and the "second" function gets the second element of a sequence.
-;
-; Examples:
-;   (swapify [:a :b :c :d]) => [:b :a :d :c]
-;   (swapify ["n" "u" "x" "i"]) => ["u" "n" "i" "x"]
-;   (swapify []) => []
-;   (swapify [:x :y :z]) => [:y :x :z]
-;   (swapify [:a]) => [:a]
-
-(defn swapify [s]
-  (loop [ss s
-         acc []]
-    (cond
-      (empty? ss) acc
-      (empty? (rest ss)) (conj acc (first ss))
-      :else (recur (rest (rest ss)) (conj (conj acc (second ss)) (first ss))))))
+(defn conj-all [a-vec a-seq]
+  (loop [v a-vec
+         s a-seq]
+    (if (empty? s)
+      v
+      (recur (conj v (first s)) (rest s)))))

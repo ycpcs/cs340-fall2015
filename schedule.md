@@ -29,17 +29,17 @@ This page lists the schedule for the course.  Note that there may be minor chang
 > Thurs, Oct 29th | Chapter 6 (Erlang), [Lecture 16: Erlang](lectures/lecture16.html)
 > Tues, Nov 3rd | [Lecture 17: More Erlang](lectures/lecture17.html)
 > Thurs, Nov 5th | [Lecture 18: Concurrency in Erlang](lectures/lecture18.html)
-> Tues, Nov 10th | Chapter 2 (Ruby), [Lecture 19: Ruby](lectures/lecture19.html)
-> Thurs, Nov 12th | [Lecture 20: Ruby Arrays, Hashes, Mixins](lectures/lecture20.html)
-> Tues, Nov 17th | [Lecture 21: Metaprogramming in Ruby](lectures/lecture21.html)
-> Thurs, Nov 19th | Exam review
+> Tues, Nov 10th | Clojure review 1
+> Thurs, Nov 12th | Chapter 2 (Ruby), [Lecture 19: Ruby](lectures/lecture19.html)
+> Tues, Nov 17th | Clojure review 2
+> Thurs, Nov 19th | [Lecture 20: Ruby Arrays, Hashes, Mixins](lectures/lecture20.html)
 > Tues, Nov 24th | **Exam 2** (programming, open book, open notes)
 > Thurs, Nov 26th | Thanksgiving vacation, no class
-> Tues, Dec 1st | Chapter 5 (Scala), Introduction to Scala
-> Thurs, Dec 3rd | More Scala
-> Tues, Dec 8th | Chapter 8 (Haskell), Introduction to Haskell
-> Thurs, Dec 10th | More Haskell
-> Tues, Dec 15th |
+> Tues, Dec 1st | [Lecture 21: Metaprogramming in Ruby](lectures/lecture21.html)
+> Thurs, Dec 3rd | Chapter 5 (Scala), Introduction to Scala
+> Tues, Dec 8th | More Scala
+> Thurs, Dec 10th | Chapter 8 (Haskell), Introduction to Haskell
+> Tues, Dec 15th | More Haskell
 
 <!--
 > Tues, Nov 4 | 

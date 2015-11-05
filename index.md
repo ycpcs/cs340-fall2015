@@ -20,6 +20,8 @@ This is the website for CS 340, Fall 2015 at York College.  All information abou
 
 ## News
 
+* **Nov 5** &mdash; The [Schedule](schedule.html) has been updated: there will be Clojure review days on Tuesday, Nov 10th and Tuesday, Nov 17th.  These review days will help you prepare for Exam 2, which will take place on Tuesday, Nov 24th.
+* **Nov 5** &mdash; [Assignment 7](assign/assign07.html) is due Friday, Nov 12th by 11:59 PM.
 * **Oct 29** &mdash; [Assignment 6](assign/assign06.html) is due Friday, Nov 6th by 11:59 PM.
 * **Oct 22** &mdash; [Assignment 5](assign/assign05.html) is due Thursday, Oct 29th by 11:59 PM.
 * **Oct 8** &mdash; The [Schedule](schedule.html) has been updated with topics and readings for the rest of the semester.

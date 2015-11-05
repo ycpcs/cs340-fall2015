@@ -3,7 +3,7 @@ layout: default
 title: "Assignment 7: Parsing, Part 2"
 ---
 
-**Due**: Thursday, Oct 20th by 11:59 PM
+**Due**: Friday, Nov 13th by 11:59 PM
 
 # Getting Started
 
@@ -11,7 +11,7 @@ Download [CS340\_Assign07.zip](CS340_Assign07.zip).
 
 If you are using Counterclockwise under Eclipse, you can import the zipfile as an Eclipse project.
 
-You should copy your `parser2.clj` file from [Assignment 5](assign05.html) into the `src/minilang` directory.
+You should copy your `parser2.clj` file from [Assignment 6](assign06.html) into the `src/minilang` directory.
 
 # Your task
 
