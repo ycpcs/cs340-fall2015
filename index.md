@@ -20,6 +20,7 @@ This is the website for CS 340, Fall 2015 at York College.  All information abou
 
 ## News
 
+* **Nov 10** &mdash; Exam 2 will take place in class on Tuesday, Nov 24th.  It will consist entirely of Clojure programming questions.  A practice exam is available on the [Practice Exams](practice/index.html) page.
 * **Nov 5** &mdash; The [Schedule](schedule.html) has been updated: there will be Clojure review days on Tuesday, Nov 10th and Tuesday, Nov 17th.  These review days will help you prepare for Exam 2, which will take place on Tuesday, Nov 24th.
 * **Nov 5** &mdash; [Assignment 7](assign/assign07.html) is due Friday, Nov 13th by 11:59 PM.
 * **Oct 29** &mdash; [Assignment 6](assign/assign06.html) is due Friday, Nov 6th by 11:59 PM.
