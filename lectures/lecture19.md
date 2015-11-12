@@ -100,7 +100,7 @@ Double-quoted strings support a variety of escape sequences to represent special
 > <td align="left">&quot;Bell&quot;</td>
 > </tr>
 > <tr class="odd">
-> <td align="left">\\</td>
+> <td align="left">\\\\</td>
 > <td align="left">Literal backslash character</td>
 > </tr>
 > <tr class="even">
