@@ -31,7 +31,7 @@ puts arr[0]    # prints "1"
 The **each** method is the usual way to iterate over the values in an array:
 
 {% highlight ruby %}
-puts.each {|n| puts n } # prints "1", "2", "3" on separate lines
+arr.each {|n| puts n } # prints "1", "2", "3" on separate lines
 {% endhighlight %}
 
 Ruby Hashes
