@@ -3,7 +3,7 @@ layout: default
 title: "Assignment 7: Parsing, Part 2"
 ---
 
-**Due**: Friday, Nov 13th by 11:59 PM
+**Due**: Wednesday, Nov 18th by 11:59 PM
 
 # Getting Started
 
