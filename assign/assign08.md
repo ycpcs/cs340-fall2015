@@ -3,9 +3,7 @@ layout: default
 title: "Assignment 8: Code Generation"
 ---
 
-**Due**: Tuesday, Dec 9th by 11:59 PM
-
-*Update 11/21*: A fixed version of [CS340\_Assign08.zip](CS340_Assign08.zip) has been uploaded.  The specific files that changed are `MiniVM.rb`, `src/minilang/scope.clj`, and `src/minilang/analyzer.clj`.
+**Due**: Friday, Dec 11th by 11:59 PM
 
 # Getting Started
 
@@ -136,8 +134,6 @@ For `:op_assign` expressions, the value of the right-hand-side expression should
 
 ## Hints
 
-*Note: this section may be updated.*
-
 The [MiniVM test programs](https://github.com/daveho/MiniVM/tree/master/t), [MiniVM documentation](https://github.com/daveho/MiniVM/blob/master/Documentation.md), and [MiniVM instruction reference](https://github.com/daveho/MiniVM/blob/master/InstructionSet.md) will probably be useful.
 
 The functions in the `node.clj` module will be useful for working with augmented AST nodes:
@@ -249,6 +245,10 @@ For extra credit (up to 50 points), implement code generation for `:if_statement
 See [Implementing Control Flow](assign08controlflow.html) for more information.
 
 This is actually not particularly difficult, and allows you to compile and run rather sophisticated programs.  And, imagine how cool it will be to mention that you implemented a compiler for a Turing-complete language with full support for variables and arbitrary control flow targeting a stack-based virtual machine in a functional language at the next party you go to.
+
+<div class="callout">
+<b>Important</b>: If you decide to do the extra credit, the code you submit must be <i>entirely your own work</i>, meaning that you should not talk about the extra credit with anyone else.
+</div>
 
 # Submitting
 
