@@ -24,3 +24,6 @@ Labs are not graded, and you do not need to submit them.  However, they are very
 > Tues, Nov 10th | [Lab 13: Clojure review](lab13.html) | [clojure-review.zip](clojure-review.zip)
 > Thurs, Nov 12th | [Lab 14: Introduction to Ruby](lab14.html) | [CS340\_Lab14.zip](CS340_Lab14.zip)
 > Tues, Nov 17th | [Lab 15: Clojure review 2](lab15.html) | [clojure-review2.zip](clojure-review2.zip)
+> Thurs, Dec 3rd | [Lab 16: Tic Tac Toe in Scala](lab16.html) | [tictactoe.scala](tictactoe.scala)
+> Tues, Dec 8th | [Lab 17: Functional programming exercises in Scala](lab17.html) | [lab17.scala](lab17.scala)
+> Thurs, Dec 10th | [Lab 18: Mandelbrot set in Scala](lab18.html) | [mandelbrot.scala](mandelbrot.scala)

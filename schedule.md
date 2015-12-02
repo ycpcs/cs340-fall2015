@@ -36,10 +36,10 @@ This page lists the schedule for the course.  Note that there may be minor chang
 > Tues, Nov 24th | **Exam 2** (programming, open book, open notes)
 > Thurs, Nov 26th | Thanksgiving vacation, no class
 > Tues, Dec 1st | [Lecture 21: Metaprogramming in Ruby](lectures/lecture21.html)
-> Thurs, Dec 3rd | Chapter 5 (Scala), Introduction to Scala
-> Tues, Dec 8th | More Scala
-> Thurs, Dec 10th | Chapter 8 (Haskell), Introduction to Haskell
-> Tues, Dec 15th | More Haskell
+> Thurs, Dec 3rd | Chapter 5 (Scala), [Scala](lectures/lecture22.html)
+> Tues, Dec 8th | [Functional programming in Scala](lectures/lecture23.html)
+> Thurs, Dec 10th | [Operator overloading, Actors in Scala](lectures/lecture24.html)
+> Tues, Dec 15th | Chapter 8 (Haskell), Introduction to Haskell
 
 <!--
 > Tues, Nov 4 | 
