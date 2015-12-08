@@ -1,4 +1,6 @@
-object Lab09 {
+import scala.annotation.tailrec
+
+object Lab17 {
   def allEven(list : List[Int]) : Boolean = {
     throw new RuntimeException("TODO")
   }
@@ -67,4 +69,4 @@ object Lab09 {
   }
 }
 
-Lab09.main(args)
+Lab17.main(args)
