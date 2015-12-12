@@ -20,6 +20,7 @@ This is the website for CS 340, Fall 2015 at York College.  All information abou
 
 ## News
 
+* **Dec 12** &mdash; A practice final exam has been posted on the [Practice Exams](practice/index.html) page.
 * **Dec 2** &mdash; The [Schedule](schedule.html) has been updated with Scala readings.
 * **Nov 19** &mdash; [Assignment 8](assign/assign08.html) is due Friday, Dec 11th by 11:59 PM.
 * **Nov 12** &mdash; The due date for [Assignment 7](assign/assign07.html) has been changed to Wednesday, Nov 18th by 11:59 PM.
