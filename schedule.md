@@ -39,7 +39,7 @@ This page lists the schedule for the course.  Note that there may be minor chang
 > Thurs, Dec 3rd | Chapter 5 (Scala), [Lecture 22: Scala](lectures/lecture22.html)
 > Tues, Dec 8th | [Lecture 23: Functional programming in Scala](lectures/lecture23.html)
 > Thurs, Dec 10th | [Lecture 24: Operator overloading, Actors in Scala](lectures/lecture24.html)
-> Tues, Dec 15th | Chapter 8 (Haskell), Introduction to Haskell
+> Tues, Dec 15th | Chapter 8 (Haskell), [Introduction to Haskell](lectures/lecture25.html)
 
 <!--
 > Tues, Nov 4 | 
