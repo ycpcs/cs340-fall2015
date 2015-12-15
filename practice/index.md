@@ -10,3 +10,5 @@ This page has links to practice exams.
 [Exam 2, Fall 2014](cs340-exam2.zip), [Solution](cs340-exam2-solution.zip): This exam consists of Clojure programming problems, see [Lab 13](../labs/lab13.html) and [Lab 15](../labs/lab15.html) for details about the exam format
 
 [Final Exam, Fall 2014](cs340-fall2014-final.pdf), [cs340-final.zip](cs340-final.zip) (progamming questions)
+
+* [Solution to written problems](cs340-fall2014-final-solution.pdf), [Solution to programming problems](cs340-final-solution.zip)
